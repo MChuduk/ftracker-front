@@ -74,7 +74,9 @@ ul {
   align-items: center;
   font-weight: 500;
   height: 35px;
+  visibility: visible;
   transition: color 0.15s ease-in-out;
+  cursor: pointer;
 
   &:hover {
     color: #109CF1;
