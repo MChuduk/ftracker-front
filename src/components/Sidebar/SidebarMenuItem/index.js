@@ -1,10 +1,13 @@
 import styles from "./SidebarMenuItem.module.scss";
 
-function SidebarMenuItem({ text, icon, onClick, addRef }) {
+function SidebarMenuItem({ text, icon, extraStyle, onClick, onAddRef }) {
   return (
-    <li className={styles.sidebarMenuItem} onClick={onClick}>
+    <li
+      className={`${styles.sidebarMenuItem} ${extraStyle || ""}`}
+      onClick={onClick}
+    >
       {icon}
-      <span>{text}</span>
+      <span ref={(el) => onAddRef(el)}>{text}</span>
     </li>
   );
 }

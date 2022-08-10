@@ -16,29 +16,6 @@ ul {
   transition: width 0.15s ease-in-out;
 }
 
-.sidebarProfile {
-  margin: 24px 0 24px 24px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  div {
-    margin-left: 16px;
-    display: flex;
-    flex-direction: column;
-
-    p {
-      font-size: 14px;
-      margin: 0;
-    }
-
-    span {
-      font-size: 11px;
-      color: gray;
-    }
-  }
-}
-
 .sidebarHeader {
   display: flex;
   align-items: center;
@@ -54,43 +31,26 @@ ul {
 }
 
 .sidebarMenuItems {
-  padding-left: 25px;
   padding-bottom: 14px;
-  border-bottom: 1px solid #ebeff2;
-}
 
-.extraMenuItems {
-  padding-top: 14px;
-  padding-left: 25px; 
-  padding-bottom: 12px;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.sidebarMenuItem {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  height: 35px;
-  visibility: visible;
-  transition: color 0.15s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    color: #109CF1;
-    
-    svg {
-      path {
-        transition: stroke 0.15s ease-in-out;
-        stroke: #109CF1;
-      }
-    }
+  li {
+    padding-left: 25px;
   }
 
+  li:last-of-type {
+    position: absolute;
+    bottom: 14px;
+  }
+}
+
+.settingsMenuItem {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px #ebeff2 solid;
+}
+
+.toggleSidebarMenuItem {
   span {
-    font-size: 13px;
-    margin-left: 16px;
+    color: #90a0b7;
   }
 }

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./Sidebar.module.scss";
+import SidebarProfile from "./SidebarProfile";
 import SidebarMenuItem from "./SidebarMenuItem";
 import DashboardIcon from "./SidebarIcons/DashboardIcon";
 import TasksIcon from "./SidebarIcons/TasksIcon";
@@ -18,7 +19,7 @@ function Sidebar() {
     },
     {
       text: "Tasks",
-      icon: <ChatIcon />,
+      icon: <TasksIcon />,
     },
     {
       text: "Email",
@@ -36,35 +37,37 @@ function Sidebar() {
       text: "Deals",
       icon: <DealsIcon />,
     },
-  ];
-
-  const extraMenuItems = [
     {
       text: "Settings",
       icon: <SettingsIcon />,
+      extraStyle: styles.settingsMenuItem,
+    },
+    {
+      text: "Toggle sidebar",
+      icon: <ToggleIcon />,
+      extraStyle: styles.toggleSidebarMenuItem,
+      onClick: () => toggle(),
     },
   ];
 
-  const menuItemRefs = [];
-
   const [isOpen, setIsOpen] = useState(true);
+  const menuItemRefs = useRef([]);
 
   const toggle = () => {
     setIsOpen(!isOpen);
     setMenuItemsVisibility();
   };
 
-  const addMenuItemRef = (ref) => {
-    menuItemRefs.current = [...menuItemRefs.current, ref];
+  const onAddRef = (element) => {
+    if (!menuItemRefs.current.includes(element) && element) {
+      menuItemRefs.current = [...menuItemRefs.current, element];
+    }
   };
 
   const setMenuItemsVisibility = () => {
     setTimeout(() => {
-      const items = [...menuItems, ...extraMenuItems];
-      console.log(items);
-      for (const item of items) {
-        const [span] = item.current.getElementsByTagName("span");
-        span.style.visibility = isOpen ? "collapse" : "visible";
+      for (const item of menuItemRefs.current) {
+        item.style.visibility = isOpen ? "collapse" : "visible";
       }
     }, 80);
   };
@@ -75,20 +78,14 @@ function Sidebar() {
       className={styles.sidebar}
     >
       <div className={styles.sidebarHeader}>
-        <p>ftracker</p>
+        <p>{isOpen ? "ftracker" : "ft"}</p>
       </div>
-      <div className={styles.sidebarProfile}>
-        <img
-          width={46}
-          height={46}
-          src="/img/sidebar/profile-photo.png"
-          alt="profile"
-        />
-        <div>
-          <p>Sierra Ferguson</p>
-          <span>s.ferguson@gmail.com</span>
-        </div>
-      </div>
+      <SidebarProfile
+        name="Sierra Ferguson"
+        email="s.ferguson@gmail.com"
+        avatarUrl="/img/sidebar/profile-photo.png"
+        onAddRef={onAddRef}
+      />
       <div className={styles.sidebarMenuItems}>
         <ul>
           {menuItems.map((item, index) => (
@@ -96,28 +93,12 @@ function Sidebar() {
               key={index}
               text={item.text}
               icon={item.icon}
-              addRef={addMenuItemRef}
+              extraStyle={item.extraStyle}
+              onClick={item.onClick}
+              onAddRef={onAddRef}
             />
           ))}
         </ul>
-      </div>
-      <div className={styles.extraMenuItems}>
-        <ul>
-          {extraMenuItems.map((item, index) => (
-            <SidebarMenuItem
-              key={index}
-              text={item.text}
-              icon={item.icon}
-              addRef={addMenuItemRef}
-            />
-          ))}
-        </ul>
-        <SidebarMenuItem
-          text="Toggle sidebar"
-          onClick={() => toggle()}
-          icon={<ToggleIcon />}
-          addRef={addMenuItemRef}
-        />
       </div>
     </nav>
   );
