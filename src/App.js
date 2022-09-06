@@ -3,8 +3,8 @@ import Sidebar from './components/Sidebar';
 
 function App() {
   return (
-    <StartPage />
-    // <Sidebar />
+    // <StartPage />
+     <Sidebar />
   );
 }
 
