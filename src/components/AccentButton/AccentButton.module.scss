@@ -1,23 +1,18 @@
-.box {
-  background: #109cf1;
-  transition: background 0.15s ease-in-out;
-  box-shadow: 0px 4px 10px rgba(16, 156, 241, 0.24);
-  border-radius: 4px;
-  padding: 10px;
-  margin: 5px;
-  color: #ffffff;
-  font-weight: 600;
-  text-align: center;
-}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2da44e;
+  border-radius: 6px;
+  height: 32px;
 
-.box:hover {
-  background: #34aff9;
-}
+  &:hover {
+    background: #2e984a;
+  }
 
-.box:active {
-  background: #098edf;
-}
-
-.box:disabled {
-  background: #c2cfe0;
+  p {
+    font-weight: 400;
+    color: #ffffff;
+    text-align: center;
+  }
 }

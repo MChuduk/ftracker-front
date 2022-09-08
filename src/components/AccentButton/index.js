@@ -1,7 +1,12 @@
 import styles from "./AccentButton.module.scss";
 
-function AcccentButton(props) {
-    return (<div className={styles.box}>{props.text}</div>);
+function AcccentButton({ text }) {
+  return (
+    <div className={styles.container}>
+      <p>{text}</p>
+    </div>
+  );
 }
 
 export default AcccentButton;
+

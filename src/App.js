@@ -1,10 +1,8 @@
-import StartPage from './components/Pages/StartPage';
-import Sidebar from './components/Sidebar';
+import SignUpForm from "./components/Forms/SignUpForm";
 
 function App() {
   return (
-    // <StartPage />
-     <Sidebar />
+    <SignUpForm />
   );
 }
 
