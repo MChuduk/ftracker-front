@@ -1,8 +1,8 @@
 import styles from "./AccentButton.module.scss";
 
-function AcccentButton({ text }) {
+function AcccentButton({ text, onClick }) {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={onClick}>
       <p>{text}</p>
     </div>
   );

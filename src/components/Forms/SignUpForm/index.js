@@ -2,7 +2,24 @@ import AcccentButton from "../../AccentButton";
 import TextInputField from "../../TextInputField";
 import styles from "./SignUpForm.module.scss";
 
+import { useMutation } from "@apollo/client";
+import { SIGN_UP_LOCAL } from "./requests/signUpLocal";
+
 function SignUpForm() {
+  const [addTodo, { data, loading, error }] = useMutation(SIGN_UP_LOCAL);
+
+  const click = () => {
+    addTodo({
+      variables: {
+        credentials: {
+          email: "123",
+          password: "123qweQWE!",
+        },
+      },
+    });
+  }
+
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -25,7 +42,7 @@ function SignUpForm() {
           <TextInputField label="Email address" />
           <TextInputField label="Password" type="password" />
           <TextInputField label="Confirm password" type="password" />
-          <AcccentButton text="Sign up" />
+          <AcccentButton text="Sign up" onClick={click} />
         </form>
       </div>
     </div>
@@ -33,4 +50,3 @@ function SignUpForm() {
 }
 
 export default SignUpForm;
-
