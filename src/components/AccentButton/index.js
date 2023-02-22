@@ -1,10 +1,10 @@
 import styles from "./AccentButton.module.scss";
 
-function AcccentButton({ text, onClick }) {
+function AcccentButton({ content, onClick, disabled }) {
   return (
-    <div className={styles.container} onClick={onClick}>
-      <p>{text}</p>
-    </div>
+    <button className={styles.container} onClick={onClick} disabled={disabled}>
+      <p>{content}</p>
+    </button>
   );
 }
 
