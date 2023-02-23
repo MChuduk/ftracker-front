@@ -51,6 +51,18 @@ function SignInForm() {
           <input
             {...register("email", {
               required: "Email is required",
+              minLength: {
+                value: 10,
+                message: "Email must be longer than or equal to 10 characters",
+              },
+              maxLength: {
+                value: 50,
+                message: "Email must be shorter than or equal to 50 characters",
+              },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Email must be an email",
+              },
             })}
             type="text"
           />
@@ -62,6 +74,27 @@ function SignInForm() {
             {...register("password", {
               onChange: (e) => setValue("password", e.target.value),
               required: "Password is required",
+              minLength: {
+                value: 10,
+                message:
+                  "Password must be longer than or equal to 10 characters",
+              },
+              maxLength: {
+                value: 50,
+                message:
+                  "Password must be shorter than or equal to 50 characters",
+              },
+              validate: (value) => {
+                if (!/[A-Z]/.test(value))
+                  return "Password must contains uppercase letters";
+                if (!/[a-z]/.test(value))
+                  return "Password must contains lowercase letters";
+                if (!/[0-9]/.test(value))
+                  return "Password must contains digits/number";
+                if (!/[!#$%&'()*+,-./:;<=>?@[\]^_{|}~]/.test(value))
+                  return "Password must contains special characters";
+                return true;
+              },
             })}
           />
         </div>
