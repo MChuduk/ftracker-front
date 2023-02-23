@@ -1,34 +1,52 @@
 .wrapper {
   display: flex;
-  justify-content: center;
-}
-
-.container {
-  display: flex;
   flex-direction: column;
   justify-content: center;
   width: 300px;
-  background: #f6f8fa;
-  border: 1px #d8dee4 solid;
-  border-radius: 6px;
-  padding: 16px;
-
-  .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  
-    .logo {
-      width: 48px;
-      height: 48px;
-      padding: 32px 32px 12px 32px;
-      fill: #24292f;
-    }
-  
-    p {
-      font-size: 22px;
-      font-weight: 300;
-      color: #24292f;
-    }
-  }
 }
+
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+.errorBox {
+}
+
+form {
+  background: #f6f8fa;
+  padding: 16px;
+}
+
+// .container {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   width: 300px;
+// }
+
+// form {
+//   background: #f6f8fa;
+//   border: 1px #d8dee4 solid;
+//   border-radius: 6px;
+//   padding: 16px;
+
+//   .header {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+
+//     .logo {
+//       width: 48px;
+//       height: 48px;
+//       padding: 32px 32px 12px 32px;
+//       fill: #24292f;
+//     }
+
+//     p {
+//       font-size: 22px;
+//       font-weight: 300;
+//       color: #24292f;
+//     }
+//   }
+// }
