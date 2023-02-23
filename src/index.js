@@ -4,10 +4,13 @@ import "./index.scss";
 import App from "./App";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./common/apolloClient";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>
 );
