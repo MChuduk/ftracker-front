@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 300px;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+  background: #f6f8fa;
+  padding: 16px;
+}

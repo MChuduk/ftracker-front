@@ -1,12 +1,13 @@
 import styles from "./AccentButton.module.scss";
 
-function AcccentButton({ text }) {
+function AcccentButton({ content, onClick, disabled }) {
   return (
     <div className={styles.container}>
-      <p>{text}</p>
+      <button onClick={onClick} disabled={disabled}>
+        <p>{content}</p>
+      </button>
     </div>
   );
 }
 
 export default AcccentButton;
-

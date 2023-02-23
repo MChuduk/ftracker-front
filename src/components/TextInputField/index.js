@@ -1,10 +1,10 @@
 import styles from "./TextInputField.module.scss";
 
-function TextInputField({ label, type = "text" }) {
+function TextInputField({ register, label, validation, type = "text", value, setValue }) {
   return (
     <div className={styles.container}>
       <label>{label}</label>
-      <input type={type}></input>
+      <input {...register(label, validation)}></input>
     </div>
   );
 }

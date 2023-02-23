@@ -5,9 +5,15 @@
   background: #2da44e;
   border-radius: 6px;
   height: 32px;
+  border: 0;
+
 
   &:hover {
     background: #2e984a;
+  }
+
+  &:disabled {
+    background: #5b9e6d;
   }
 
   p {

@@ -1,35 +1,28 @@
-import AcccentButton from "../../AccentButton";
-import TextInputField from "../../TextInputField";
-import styles from "./SignUpForm.module.scss";
-import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { SIGN_UP_MUTATION } from "./mutations/signUp";
-import AccentLoader from "../../AccentLoader";
-import AccentErrorBox from "../../AccentErrorBox";
-import { useForm, useFormState } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import { useForm } from "react-hook-form";
+import { SIGN_IN_MUTATION } from "../SignInForm/mutations/signIn";
+import styles from "./SignInForm.module.scss";
 
-function SignUpForm() {
+function SignInForm() {
   const {
     register,
     formState: { errors },
     handleSubmit,
     setError,
-    getValues,
     setValue,
     reset,
   } = useForm({ reValidateMode: "onSubmit" });
 
-  const [signUpMutation, { loading }] =
-    useMutation(SIGN_UP_MUTATION);
+  const [signInMutation, { loading }] = useMutation(SIGN_IN_MUTATION);
 
   const onSubmit = (data) => {
-    const { email, password, displayName } = data;
-    signUpMutation({
+    const { email, password } = data;
+    signInMutation({
       variables: {
-        credentials: { email, password, displayName },
+        credentials: { email, password },
       },
-      onError: (error) => setError('email', error),
+      onError: (error) => setError("email", error),
       onCompleted: (data) => {
         console.log("data: ", data);
         reset();
@@ -53,25 +46,6 @@ function SignUpForm() {
     <div className={styles.wrapper}>
       {getError()}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.input}>
-          <label>Display name</label>
-          <input
-            {...register("displayName", {
-              required: "Display name is required",
-              minLength: {
-                value: 3,
-                message:
-                  "Display name must be longer than or equal to 3 characters",
-              },
-              maxLength: {
-                value: 50,
-                message:
-                  "Display name must be shorter than or equal to 50 characters",
-              },
-            })}
-            type="text"
-          />
-        </div>
         <div className={styles.input}>
           <label>Email</label>
           <input
@@ -124,23 +98,10 @@ function SignUpForm() {
             })}
           />
         </div>
-        <div className={styles.input}>
-          <label>Confirm Password</label>
-          <input
-            {...register("confirmPassword", {
-              required: "Confirm password",
-              validate: (value) => {
-                if (value !== getValues("password")) return "Password mismatch";
-                return true;
-              },
-            })}
-            type="password"
-          />
-        </div>
-        <input type="submit" value={loading ? "Signing Up..." : "Sign Up"} />
+        <input type="submit" value={loading ? "Signing In..." : "Sign In"} />
       </form>
     </div>
   );
 }
 
-export default SignUpForm;
+export default SignInForm;
