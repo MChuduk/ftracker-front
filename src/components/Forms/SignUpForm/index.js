@@ -6,10 +6,18 @@ import { useMutation } from "@apollo/client";
 import { SIGN_UP_MUTATION } from "./mutations/signUp";
 import AccentLoader from "../../AccentLoader";
 import AccentErrorBox from "../../AccentErrorBox";
-import { useForm, useFormState } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import { useAuth } from '../../../hooks/useAuth';
+import { useLocation, useNavigate } from "react-router-dom";
 
-function SignUpForm() {
+const SignUpForm = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+
   const {
     register,
     formState: { errors },
@@ -20,20 +28,17 @@ function SignUpForm() {
     reset,
   } = useForm({ reValidateMode: "onSubmit" });
 
-  const [signUpMutation, { loading }] =
-    useMutation(SIGN_UP_MUTATION);
-
   const onSubmit = (data) => {
-    const { email, password, displayName } = data;
-    signUpMutation({
-      variables: {
-        credentials: { email, password, displayName },
-      },
-      onError: (error) => setError('email', error),
-      onCompleted: (data) => {
-        console.log("data: ", data);
-        reset();
-      },
+    setLoading(true);
+    signUp(data, (error, response) => {
+      if (error) {
+        setError('email', error);
+        return;
+      }
+      console.log("response: ", response);
+      navigate('/signIn', { replace: true })
+      setLoading(false);
+      reset();
     });
   };
 
@@ -143,4 +148,4 @@ function SignUpForm() {
   );
 }
 
-export default SignUpForm;
+export { SignUpForm };

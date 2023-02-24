@@ -1,4 +1,4 @@
-function DashboardPage() {
+const DashboardPage = () => {
   return (
     <div>
       <p>dashboard</p>
@@ -6,4 +6,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export { DashboardPage };

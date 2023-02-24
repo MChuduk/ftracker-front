@@ -1,10 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { ErrorMessage } from "@hookform/error-message";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { SIGN_IN_MUTATION } from "../SignInForm/mutations/signIn";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 import styles from "./SignInForm.module.scss";
 
 function SignInForm() {
+  const { signIn } = useAuth();
   const {
     register,
     formState: { errors },
@@ -13,20 +16,22 @@ function SignInForm() {
     setValue,
     reset,
   } = useForm({ reValidateMode: "onSubmit" });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const [signInMutation, { loading }] = useMutation(SIGN_IN_MUTATION);
+  const fromPage = location.state?.from?.pathname || "/";
 
   const onSubmit = (data) => {
-    const { email, password } = data;
-    signInMutation({
-      variables: {
-        credentials: { email, password },
-      },
-      onError: (error) => setError("email", error),
-      onCompleted: (data) => {
-        console.log("data: ", data);
-        reset();
-      },
+    setLoading(true);
+    signIn(data, (error, response) => {
+      if (error) {
+        setError("email", error);
+      }
+      console.log("response: ", response);
+      navigate(fromPage, { replace: true });
+      setLoading(false);
+      reset();
     });
   };
 
