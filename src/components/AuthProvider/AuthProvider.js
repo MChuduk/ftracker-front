@@ -11,11 +11,13 @@ const AuthProvider = ({ children }) => {
   const [signInMutation] = useMutation(SIGN_IN_MUTATION);
   const [signUpMutation] = useMutation(SIGN_UP_MUTATION);
   const [logoutMutation] = useMutation(LOGOUT_MUTATION);
-  const [getUserQuery] = useLazyQuery(CURRENT_USER_QUERY);
+  const [getUserQuery] = useLazyQuery(CURRENT_USER_QUERY, {
+    fetchPolicy: "network-only",
+  });
 
-  const getCurrentUser = (callback) => {
+  const getCurrentUser = (callback, options = { refetch: false} ) => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser) {
+    if (!options.refetch && currentUser) {
       callback(null, currentUser);
       return;
     }
@@ -55,7 +57,7 @@ const AuthProvider = ({ children }) => {
       onError: (error) => callback(error),
       onCompleted: (data) => {
         localStorage.removeItem("currentUser");
-        callback(null, data)
+        callback(null, data);
       },
     });
   };
