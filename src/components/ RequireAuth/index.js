@@ -1,22 +1,23 @@
-import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { Navigate, Outlet, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { CURRENT_USER_QUERY } from "../AuthProvider/queries/currentUser";
 
 const RequireAuth = ({ children }) => {
-  const [user, setUser] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { getCurrentUser } = useAuth();
 
   useEffect(() => {
     getCurrentUser((error, user) => {
-      if (user) setUser(user);
-      setIsChecking(false);
+      console.log("current user", user);
+      if (user) {
+        setUser(user); 
+      }
+      setLoading(false);
     });
-  }, [user]);
+  }, []);
 
-  if (isChecking) return;
+  if (loading) return;
 
   return user ? children : <Navigate to={"/signIn"} />;
 };

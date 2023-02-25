@@ -25,12 +25,13 @@ function SignInForm() {
   const onSubmit = (data) => {
     setLoading(true);
     signIn(data, (error, response) => {
+      setLoading(false);
       if (error) {
         setError("email", error);
+        return;
       }
       console.log("response: ", response);
       navigate(fromPage, { replace: true });
-      setLoading(false);
       reset();
     });
   };

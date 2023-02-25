@@ -1,22 +1,14 @@
-import AcccentButton from "../../AccentButton";
-import TextInputField from "../../TextInputField";
 import styles from "./SignUpForm.module.scss";
-import { useEffect, useState } from "react";
-import { useMutation } from "@apollo/client";
-import { SIGN_UP_MUTATION } from "./mutations/signUp";
-import AccentLoader from "../../AccentLoader";
-import AccentErrorBox from "../../AccentErrorBox";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { useAuth } from '../../../hooks/useAuth';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const { signUp } = useAuth();
   const [loading, setLoading] = useState(false);
-
 
   const {
     register,
@@ -31,13 +23,13 @@ const SignUpForm = () => {
   const onSubmit = (data) => {
     setLoading(true);
     signUp(data, (error, response) => {
+      setLoading(false);
       if (error) {
         setError('email', error);
         return;
       }
       console.log("response: ", response);
       navigate('/signIn', { replace: true })
-      setLoading(false);
       reset();
     });
   };
