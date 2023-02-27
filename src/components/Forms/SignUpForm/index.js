@@ -6,6 +6,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { AccentTextInput } from "../../AccentTextInput";
 import { AcccentButton } from "../../AccentButton";
+import { AccentErrorBox } from "../../AccentErrorBox";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const SignUpForm = () => {
     getValues,
     setValue,
     reset,
+    clearErrors,
   } = useForm({ reValidateMode: "onSubmit" });
 
   const onSubmit = (data) => {
@@ -39,11 +41,14 @@ const SignUpForm = () => {
   const getError = () => {
     for (const key of Object.keys(errors)) {
       return (
-        <ErrorMessage
-          errors={errors}
-          name={key}
-          render={({ message }) => <p>{message}</p>}
-        />
+        <div>
+          <ErrorMessage
+            errors={errors}
+            name={key}
+            render={({ message }) => <AccentErrorBox content={message} onClose={() => clearErrors()} />}
+          />
+          <br />
+        </div>
       );
     }
   };
@@ -56,7 +61,7 @@ const SignUpForm = () => {
           label="Display name"
           inputProps={{
             ...register("displayName", {
-              required: "Display name is required",
+              required: "Display name is required.",
               minLength: {
                 value: 3,
                 message:
@@ -74,7 +79,7 @@ const SignUpForm = () => {
           label="Email"
           inputProps={{
             ...register("email", {
-              required: "Email is required",
+              required: "Email is required.",
               minLength: {
                 value: 10,
                 message: "Email must be longer than or equal to 10 characters",
@@ -95,7 +100,7 @@ const SignUpForm = () => {
           inputProps={{
             ...register("password", {
               onChange: (e) => setValue("password", e.target.value),
-              required: "Password is required",
+              required: "Password is required.",
               minLength: {
                 value: 10,
                 message:
@@ -125,7 +130,7 @@ const SignUpForm = () => {
           label="Confirm password"
           inputProps={{
             ...register("confirmPassword", {
-              required: "Confirm password",
+              required: "Confirm password.",
               validate: (value) => {
                 if (value !== getValues("password")) return "Password mismatch";
                 return true;

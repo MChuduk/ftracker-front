@@ -1,5 +1,29 @@
-.container {
-    width: auto;
-    background: #ffebe9;
-    height: 55px;
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    color: rgb(49, 49, 49);
+    background-color: #ffebe9;
+    border: 1px solid #ffc0c0;
+    width: 100%;
+    text-align: left;
+    padding: 20px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    font-size: 14px;
+  }
+}
+
+.close {
+  &:hover {
+    * {
+      fill: rgb(255, 118, 118);
+    }
+  }
 }

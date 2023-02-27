@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { AcccentButton } from "../../AccentButton";
+import { AccentErrorBox } from "../../AccentErrorBox";
 import { AccentTextInput } from "../../AccentTextInput";
 import styles from "./SignInForm.module.scss";
 
@@ -17,6 +18,7 @@ function SignInForm() {
     setError,
     setValue,
     reset,
+    clearErrors,
   } = useForm({ reValidateMode: "onSubmit" });
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,11 +43,16 @@ function SignInForm() {
   const getError = () => {
     for (const key of Object.keys(errors)) {
       return (
-        <ErrorMessage
-          errors={errors}
-          name={key}
-          render={({ message }) => <p>{message}</p>}
-        />
+        <div>
+          <ErrorMessage
+            errors={errors}
+            name={key}
+            render={({ message }) => (
+              <AccentErrorBox content={message} onClose={() => clearErrors()} />
+            )}
+          />
+          <br />
+        </div>
       );
     }
   };
@@ -58,7 +65,7 @@ function SignInForm() {
           label="Email"
           inputProps={{
             ...register("email", {
-              required: "Email is required",
+              required: "Email is required.",
               minLength: {
                 value: 10,
                 message: "Email must be longer than or equal to 10 characters",
@@ -79,7 +86,7 @@ function SignInForm() {
           inputProps={{
             ...register("password", {
               onChange: (e) => setValue("password", e.target.value),
-              required: "Password is required",
+              required: "Password is required.",
               minLength: {
                 value: 10,
                 message:
