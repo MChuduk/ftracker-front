@@ -1,3 +1,4 @@
+import styles from "./DashboardPage.module.scss";
 import { useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { CURRENT_USER_QUERY } from "../../components/AuthProvider/queries/currentUser";
@@ -5,7 +6,9 @@ import { useAuth } from "../../hooks/useAuth";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const [getUserQuery] = useLazyQuery(CURRENT_USER_QUERY, { fetchPolicy: "network-only" });
+  const [getUserQuery] = useLazyQuery(CURRENT_USER_QUERY, {
+    fetchPolicy: "network-only",
+  });
   const { logout, getCurrentUser, dispatchGraphqlRequest } = useAuth();
 
   const logoutHandler = () => {
