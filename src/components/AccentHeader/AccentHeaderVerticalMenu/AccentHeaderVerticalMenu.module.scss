@@ -1,0 +1,28 @@
+.wrapper {
+  display: none;
+  flex-direction: column;
+  align-self: start;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.pageLink {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: rgb(69, 73, 78);
+  color: white;
+  margin: 0px 10px 0px 10px;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 0px 8px 0;
+
+  &:hover {
+    color: rgb(192, 192, 192);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    display: flex;
+  }
+}

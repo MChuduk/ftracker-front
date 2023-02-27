@@ -56,7 +56,7 @@ const SignUpForm = () => {
   return (
     <div className={styles.wrapper}>
       {getError()}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <AccentTextInput
           label="Display name"
           inputProps={{

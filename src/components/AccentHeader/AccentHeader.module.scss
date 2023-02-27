@@ -1,0 +1,76 @@
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #24292f;
+    padding: 15px 40px 15px 40px;
+}
+
+.menuButton {
+    display: none;
+    position: absolute;
+    left: 25px;
+
+    &:hover path {
+        stroke: rgb(192, 192, 192);
+    }
+}
+
+.logo {
+    margin-right: 50px;
+
+    &:hover svg {
+        fill: rgb(192, 192, 192);
+    }
+}
+
+.pageLink {
+    color: white;
+    margin: 0px 10px 0px 10px;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+        color: rgb(192, 192, 192);
+    }
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.profileButton {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: grey;
+}
+
+@media screen and (max-width: 800px) {
+    header {
+        flex-direction: column;
+        padding: 15px 20px 15px 20px;
+    }
+
+    .menu {
+        justify-content: center;
+    }
+
+    .menuButton {
+        display: block;
+    }
+
+    .logo {
+        margin-right: 0;
+    }
+
+    .pageLink {
+        display: none;
+    }
+
+    .profileButton {
+        display: none;
+    }
+}
