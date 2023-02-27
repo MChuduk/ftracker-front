@@ -1,0 +1,17 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div {
+        border-radius: 6px;
+        color: rgb(49, 49, 49);
+        border: 1px solid rgb(221, 221, 221);
+        width: 100%;
+        text-align: center;
+        padding: 20px 10px 20px 10px;
+        font-weight: 400;
+        letter-spacing: 0.2px;
+        font-size: 14px;
+    }
+}

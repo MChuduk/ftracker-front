@@ -1,6 +1,6 @@
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import SignUpPage from "./pages/SignUpPage";
-import SignInPage from "./pages/SignInPage";
+import { SignUpPage } from "./pages/SignUpPage";
+import { SignInPage } from "./pages/SignInPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { RequireAuth } from "./components/ RequireAuth";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider";

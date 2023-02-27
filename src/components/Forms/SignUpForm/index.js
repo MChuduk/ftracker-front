@@ -2,8 +2,11 @@ import styles from "./SignUpForm.module.scss";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { AccentTextInput } from "../../AccentTextInput";
+import { AcccentButton } from "../../AccentButton";
+import { AccentErrorBox } from "../../AccentErrorBox";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -18,6 +21,7 @@ const SignUpForm = () => {
     getValues,
     setValue,
     reset,
+    clearErrors,
   } = useForm({ reValidateMode: "onSubmit" });
 
   const onSubmit = (data) => {
@@ -25,11 +29,11 @@ const SignUpForm = () => {
     signUp(data, (error, response) => {
       setLoading(false);
       if (error) {
-        setError('email', error);
+        setError("email", error);
         return;
       }
       console.log("response: ", response);
-      navigate('/signIn', { replace: true })
+      navigate("/signIn", { replace: true });
       reset();
     });
   };
@@ -37,11 +41,14 @@ const SignUpForm = () => {
   const getError = () => {
     for (const key of Object.keys(errors)) {
       return (
-        <ErrorMessage
-          errors={errors}
-          name={key}
-          render={({ message }) => <p>{message}</p>}
-        />
+        <div>
+          <ErrorMessage
+            errors={errors}
+            name={key}
+            render={({ message }) => <AccentErrorBox content={message} onClose={() => clearErrors()} />}
+          />
+          <br />
+        </div>
       );
     }
   };
@@ -50,11 +57,11 @@ const SignUpForm = () => {
     <div className={styles.wrapper}>
       {getError()}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.input}>
-          <label>Display name</label>
-          <input
-            {...register("displayName", {
-              required: "Display name is required",
+        <AccentTextInput
+          label="Display name"
+          inputProps={{
+            ...register("displayName", {
+              required: "Display name is required.",
               minLength: {
                 value: 3,
                 message:
@@ -65,15 +72,14 @@ const SignUpForm = () => {
                 message:
                   "Display name must be shorter than or equal to 50 characters",
               },
-            })}
-            type="text"
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Email</label>
-          <input
-            {...register("email", {
-              required: "Email is required",
+            }),
+          }}
+        />
+        <AccentTextInput
+          label="Email"
+          inputProps={{
+            ...register("email", {
+              required: "Email is required.",
               minLength: {
                 value: 10,
                 message: "Email must be longer than or equal to 10 characters",
@@ -86,17 +92,15 @@ const SignUpForm = () => {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "Email must be an email",
               },
-            })}
-            type="text"
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Password</label>
-          <input
-            type="password"
-            {...register("password", {
+            }),
+          }}
+        />
+        <AccentTextInput
+          label="Password"
+          inputProps={{
+            ...register("password", {
               onChange: (e) => setValue("password", e.target.value),
-              required: "Password is required",
+              required: "Password is required.",
               minLength: {
                 value: 10,
                 message:
@@ -118,26 +122,30 @@ const SignUpForm = () => {
                   return "Password must contains special characters";
                 return true;
               },
-            })}
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Confirm Password</label>
-          <input
-            {...register("confirmPassword", {
-              required: "Confirm password",
+            }),
+            type: "password",
+          }}
+        />
+        <AccentTextInput
+          label="Confirm password"
+          inputProps={{
+            ...register("confirmPassword", {
+              required: "Confirm password.",
               validate: (value) => {
                 if (value !== getValues("password")) return "Password mismatch";
                 return true;
               },
-            })}
-            type="password"
-          />
-        </div>
-        <input type="submit" value={loading ? "Signing Up..." : "Sign Up"} />
+            }),
+            type: "password",
+          }}
+        />
+        <AcccentButton
+          value={loading ? "Signing Up..." : "Sign Up"}
+          buttonProps={{ type: "submit", disabled: loading }}
+        />
       </form>
     </div>
   );
-}
+};
 
 export { SignUpForm };

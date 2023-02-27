@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import { AcccentButton } from "../../AccentButton";
+import { AccentErrorBox } from "../../AccentErrorBox";
+import { AccentTextInput } from "../../AccentTextInput";
 import styles from "./SignInForm.module.scss";
 
 function SignInForm() {
@@ -15,6 +18,7 @@ function SignInForm() {
     setError,
     setValue,
     reset,
+    clearErrors,
   } = useForm({ reValidateMode: "onSubmit" });
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,11 +43,16 @@ function SignInForm() {
   const getError = () => {
     for (const key of Object.keys(errors)) {
       return (
-        <ErrorMessage
-          errors={errors}
-          name={key}
-          render={({ message }) => <p>{message}</p>}
-        />
+        <div>
+          <ErrorMessage
+            errors={errors}
+            name={key}
+            render={({ message }) => (
+              <AccentErrorBox content={message} onClose={() => clearErrors()} />
+            )}
+          />
+          <br />
+        </div>
       );
     }
   };
@@ -52,11 +61,11 @@ function SignInForm() {
     <div className={styles.wrapper}>
       {getError()}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.input}>
-          <label>Email</label>
-          <input
-            {...register("email", {
-              required: "Email is required",
+        <AccentTextInput
+          label="Email"
+          inputProps={{
+            ...register("email", {
+              required: "Email is required.",
               minLength: {
                 value: 10,
                 message: "Email must be longer than or equal to 10 characters",
@@ -69,17 +78,15 @@ function SignInForm() {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "Email must be an email",
               },
-            })}
-            type="text"
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Password</label>
-          <input
-            type="password"
-            {...register("password", {
+            }),
+          }}
+        />
+        <AccentTextInput
+          label="Password"
+          inputProps={{
+            ...register("password", {
               onChange: (e) => setValue("password", e.target.value),
-              required: "Password is required",
+              required: "Password is required.",
               minLength: {
                 value: 10,
                 message:
@@ -101,10 +108,14 @@ function SignInForm() {
                   return "Password must contains special characters";
                 return true;
               },
-            })}
-          />
-        </div>
-        <input type="submit" value={loading ? "Signing In..." : "Sign In"} />
+            }),
+            type: "password",
+          }}
+        />
+        <AcccentButton
+          value={loading ? "Signing In..." : "Sign In"}
+          buttonProps={{ type: "submit", disabled: loading }}
+        />
       </form>
     </div>
   );

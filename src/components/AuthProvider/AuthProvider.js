@@ -18,10 +18,7 @@ const AuthProvider = ({ children }) => {
   const [getUserQuery] = useLazyQuery(CURRENT_USER_QUERY, {
     fetchPolicy: "network-only",
   });
-  const [
-    refreshMutation,
-    { reset: resetRefreshMutation, called: isRefreshCalled },
-  ] = useMutation(REFRESH_MUTATION, {
+  const [refreshMutation] = useMutation(REFRESH_MUTATION, {
     fetchPolicy: "network-only",
   });
 
@@ -84,9 +81,9 @@ const AuthProvider = ({ children }) => {
       },
       onCompleted: () => {
         dispatchGraphqlRequest(request, callback);
-      }
+      },
     });
-  }
+  };
 
   const dispatchGraphqlRequest = (request, callback) => {
     request({
@@ -95,7 +92,7 @@ const AuthProvider = ({ children }) => {
           refresh(request, callback);
           return;
         }
-        callback(error)
+        callback(error);
       },
       onCompleted: (data) => callback(null, data),
     });
