@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import SignInForm from "../../components/Forms/SignInForm";
 import { AccentInfoBox } from "../../components/AccentInfoBox";
 
-function SignInPage() {
+const SignInPage = ()  => {
   return (
     <div className={styles.wrapper}>
       <div>
@@ -36,4 +36,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export { SignInPage };

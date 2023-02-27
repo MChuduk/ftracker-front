@@ -2,8 +2,10 @@ import styles from "./SignUpForm.module.scss";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { AccentTextInput } from "../../AccentTextInput";
+import { AcccentButton } from "../../AccentButton";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -25,11 +27,11 @@ const SignUpForm = () => {
     signUp(data, (error, response) => {
       setLoading(false);
       if (error) {
-        setError('email', error);
+        setError("email", error);
         return;
       }
       console.log("response: ", response);
-      navigate('/signIn', { replace: true })
+      navigate("/signIn", { replace: true });
       reset();
     });
   };
@@ -50,10 +52,10 @@ const SignUpForm = () => {
     <div className={styles.wrapper}>
       {getError()}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.input}>
-          <label>Display name</label>
-          <input
-            {...register("displayName", {
+        <AccentTextInput
+          label="Display name"
+          inputProps={{
+            ...register("displayName", {
               required: "Display name is required",
               minLength: {
                 value: 3,
@@ -65,14 +67,13 @@ const SignUpForm = () => {
                 message:
                   "Display name must be shorter than or equal to 50 characters",
               },
-            })}
-            type="text"
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Email</label>
-          <input
-            {...register("email", {
+            }),
+          }}
+        />
+        <AccentTextInput
+          label="Email"
+          inputProps={{
+            ...register("email", {
               required: "Email is required",
               minLength: {
                 value: 10,
@@ -86,15 +87,13 @@ const SignUpForm = () => {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "Email must be an email",
               },
-            })}
-            type="text"
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Password</label>
-          <input
-            type="password"
-            {...register("password", {
+            }),
+          }}
+        />
+        <AccentTextInput
+          label="Password"
+          inputProps={{
+            ...register("password", {
               onChange: (e) => setValue("password", e.target.value),
               required: "Password is required",
               minLength: {
@@ -118,26 +117,30 @@ const SignUpForm = () => {
                   return "Password must contains special characters";
                 return true;
               },
-            })}
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Confirm Password</label>
-          <input
-            {...register("confirmPassword", {
+            }),
+            type: "password",
+          }}
+        />
+        <AccentTextInput
+          label="Confirm password"
+          inputProps={{
+            ...register("confirmPassword", {
               required: "Confirm password",
               validate: (value) => {
                 if (value !== getValues("password")) return "Password mismatch";
                 return true;
               },
-            })}
-            type="password"
-          />
-        </div>
-        <input type="submit" value={loading ? "Signing Up..." : "Sign Up"} />
+            }),
+            type: "password",
+          }}
+        />
+        <AcccentButton
+          value={loading ? "Signing Up..." : "Sign Up"}
+          buttonProps={{ type: "submit", disabled: loading }}
+        />
       </form>
     </div>
   );
-}
+};
 
 export { SignUpForm };
