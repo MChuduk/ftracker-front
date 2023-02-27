@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import { AcccentButton } from "../../AccentButton";
+import { AccentTextInput } from "../../AccentTextInput";
 import styles from "./SignInForm.module.scss";
 
 function SignInForm() {
@@ -52,10 +54,10 @@ function SignInForm() {
     <div className={styles.wrapper}>
       {getError()}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.input}>
-          <label>Email</label>
-          <input
-            {...register("email", {
+        <AccentTextInput
+          label="Email"
+          inputProps={{
+            ...register("email", {
               required: "Email is required",
               minLength: {
                 value: 10,
@@ -69,15 +71,13 @@ function SignInForm() {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "Email must be an email",
               },
-            })}
-            type="text"
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Password</label>
-          <input
-            type="password"
-            {...register("password", {
+            }),
+          }}
+        />
+        <AccentTextInput
+          label="Password"
+          inputProps={{
+            ...register("password", {
               onChange: (e) => setValue("password", e.target.value),
               required: "Password is required",
               minLength: {
@@ -101,10 +101,14 @@ function SignInForm() {
                   return "Password must contains special characters";
                 return true;
               },
-            })}
-          />
-        </div>
-        <input type="submit" value={loading ? "Signing In..." : "Sign In"} />
+            }),
+            type: "password",
+          }}
+        />
+        <AcccentButton
+          value={loading ? "Signing In..." : "Sign In"}
+          buttonProps={{ type: "submit", disabled: loading }}
+        />
       </form>
     </div>
   );
