@@ -5,12 +5,15 @@ import App from "./App";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./common/apolloClient";
 import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </ApolloProvider>
 );
