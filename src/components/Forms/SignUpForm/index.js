@@ -5,7 +5,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { AccentTextInput } from "../../AccentTextInput";
-import { AcccentButton } from "../../AccentButton";
+import { AccentButton } from "../../AccentButton";
 import { AccentErrorBox } from "../../AccentErrorBox";
 
 const SignUpForm = () => {
@@ -139,7 +139,7 @@ const SignUpForm = () => {
             type: "password",
           }}
         />
-        <AcccentButton
+        <AccentButton
           value={loading ? "Signing Up..." : "Sign Up"}
           buttonProps={{ type: "submit", disabled: loading }}
         />

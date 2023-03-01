@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
-import { AcccentButton } from "../../AccentButton";
+import { AccentButton } from "../../AccentButton";
 import { AccentErrorBox } from "../../AccentErrorBox";
 import { AccentTextInput } from "../../AccentTextInput";
 import styles from "./SignInForm.module.scss";
@@ -112,7 +112,7 @@ function SignInForm() {
             type: "password",
           }}
         />
-        <AcccentButton
+        <AccentButton
           value={loading ? "Signing In..." : "Sign In"}
           buttonProps={{ type: "submit", disabled: loading }}
         />
