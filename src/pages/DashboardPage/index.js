@@ -3,6 +3,7 @@ import { useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { CURRENT_USER_QUERY } from "../../components/AuthProvider/queries/currentUser";
 import { useAuth } from "../../hooks/useAuth";
+import { AuthService } from "../../api/auth-service";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -20,28 +21,15 @@ const DashboardPage = () => {
     });
   };
 
-  const currentUserHandler = () => {
-    dispatchGraphqlRequest(getUserQuery, (error, data) => {
-      if (error) {
-        return;
-      }
-      console.log("data user", data);
-    });
-    // getCurrentUser(
-    //   (error, user) => {
-    //     if (error) {
-    //       console.log("error -> ", error);
-    //       return;
-    //     }
-    //     console.log("USER", user);
-    //   },
-    //   { refetch: true }
-    // );
+  const currentUserHandler = async () => {
+    const userData = await AuthService.getCurrentUser({ fields: "id" });
+    console.log('userData: ', userData);
   };
 
   return (
     <div>
       <p>dashboard</p>
+      <button onClick={() => AuthService.refreshTokens({ fields: "id" })}>Refresh tokens</button>
       <button onClick={logoutHandler}>Logout</button>
       <button onClick={currentUserHandler}>Get Current User</button>
     </div>
