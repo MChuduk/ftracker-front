@@ -2,6 +2,24 @@ import { gql } from "@apollo/client";
 import { client, GRAPHQL_ERRORS, matchGraphqlError } from "./apollo-client";
 
 export class AuthService {
+  static async signIn(data) {
+    const { fields, email, password } = data;
+    const credentials = { email, password };
+    const mutation = gql`mutation ($credentials: SignInLocalInput!) {
+        signInLocal(credentials: $credentials) { ${fields} } 
+    }`;
+    return await client.mutate({ mutation, variables: { credentials } });
+  }
+
+  static async signUp(data) {
+    const { fields, email, password, displayName } = data;
+    const credentials = { email, password, displayName };
+    const mutation = gql`mutation ($credentials: SignUpLocalInput!) {
+        signUpLocal(credentials: $credentials) { ${fields} }
+    }`;
+    return await client.mutate({ mutation, variables: { credentials } });
+  }
+
   static async refreshTokens(data) {
     return await this.dispatchGraphqlRequest(async () => {
       const { fields } = data;
