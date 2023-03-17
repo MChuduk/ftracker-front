@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { WalletService } from "./../../../api/wallet-service";
 
 const CreateWalletPage = () => {
-
+  
   // async function test() {
   //   const result = await WalletService.create({ name: '213', userId: 'b9b8de2d-4daa-4f00-aac2-8e971d13b2fc' }, "id")
   //   console.log("CREATE WALLET RESULT: ", result);
