@@ -8,8 +8,8 @@ const RequireAuth = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await AuthService.getCurrentUser({ fields: "id" });
-      setUser(userData);
+      const { currentUser } = await AuthService.getCurrentUser({ fields: "id" });
+      setUser(currentUser);
       setLoading(false);
     }
     fetchUser();

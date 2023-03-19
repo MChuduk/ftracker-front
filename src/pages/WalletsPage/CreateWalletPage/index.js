@@ -1,16 +1,37 @@
 import { AccentButton } from "../../../components/AccentButton";
 import { AccentTextInput } from "../../../components/AccentTextInput";
-import { AccentHorizontalLine } from "../../../components/AccentHorizontalLine"  
+import { AccentHorizontalLine } from "../../../components/AccentHorizontalLine";
 import styles from "./CreateWalletPage.module.scss";
-import { useEffect } from "react";
-import { WalletService } from "./../../../api/wallet-service";
+import { useForm } from "react-hook-form";
+import { AuthService } from "../../../api/auth-service";
+import { WalletsService } from "../../../api/wallet-service";
+import { useState } from "react";
 
 const CreateWalletPage = () => {
-  
-  // async function test() {
-  //   const result = await WalletService.create({ name: '213', userId: 'b9b8de2d-4daa-4f00-aac2-8e971d13b2fc' }, "id")
-  //   console.log("CREATE WALLET RESULT: ", result);
-  // }
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset
+  } = useForm({ reValidateMode: "onBlur" });
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const { currentUser } = await AuthService.getCurrentUser({
+        fields: "id",
+      });
+      data.userId = currentUser.id;
+
+      const result = await WalletsService.create({ fields: "id", ...data });
+      console.log("result", result);
+      reset();
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -19,10 +40,35 @@ const CreateWalletPage = () => {
           <h3>Create a new wallet</h3>
           <span>A wallet using to make transactions in various currency.</span>
         </div>
-        <AccentHorizontalLine spacing="25px"/>
-        <AccentTextInput label="Name" invert />
-        <AccentHorizontalLine spacing="15px"/>
-        <AccentButton value="Create wallet" width="150px" onClick={() => test()}/>
+        <form autoCapitalize="off" onSubmit={handleSubmit(onSubmit)}>
+          <AccentHorizontalLine spacing="25px" />
+          <AccentTextInput
+            label="Name"
+            name="name"
+            errors={errors}
+            invert
+            inputProps={{
+              ...register("name", {
+                required: "Name is required.",
+                minLength: {
+                  value: 3,
+                  message: "Name must be longer than or equal to 3 characters",
+                },
+                maxLength: {
+                  value: 30,
+                  message:
+                    "Name must be shorter than or equal to 30 characters",
+                },
+              }),
+            }}
+          />
+          <AccentHorizontalLine spacing="15px" />
+          <AccentButton
+            value="Create wallet"
+            width="150px"
+            buttonProps={{ type: "submit", disabled: loading }}
+          />
+        </form>
       </div>
     </div>
   );

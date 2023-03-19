@@ -2,37 +2,41 @@ import { gql } from "@apollo/client";
 import { client, GRAPHQL_ERRORS, matchGraphqlError } from "./apollo-client";
 
 export class AuthService {
-  static async signIn(data) {
-    const { fields, email, password } = data;
+  static async signIn(request) {
+    const { fields, email, password } = request;
     const credentials = { email, password };
     const mutation = gql`mutation ($credentials: SignInLocalInput!) {
         signInLocal(credentials: $credentials) { ${fields} } 
     }`;
-    return await client.mutate({ mutation, variables: { credentials } });
+    const { data } = await client.mutate({ mutation, variables: { credentials } });
+    return data;
   }
 
-  static async signUp(data) {
-    const { fields, email, password, displayName } = data;
+  static async signUp(request) {
+    const { fields, email, password, displayName } = request;
     const credentials = { email, password, displayName };
     const mutation = gql`mutation ($credentials: SignUpLocalInput!) {
         signUpLocal(credentials: $credentials) { ${fields} }
     }`;
-    return await client.mutate({ mutation, variables: { credentials } });
+    const { data } = await client.mutate({ mutation, variables: { credentials } });
+    return data;
   }
 
-  static async refreshTokens(data) {
+  static async refreshTokens(request) {
     return await this.dispatchGraphqlRequest(async () => {
-      const { fields } = data;
+      const { fields } = request;
       const mutation = gql`mutation { refresh { ${fields} } }`;
-      return await client.mutate({ mutation });
+      const { data } = await client.mutate({ mutation });
+      return data;
     }, true);
   }
 
-  static async getCurrentUser(data) {
+  static async getCurrentUser(request) {
     return await this.dispatchGraphqlRequest(async () => {
-      const { fields } = data;
+      const { fields } = request;
       const query = gql`query { currentUser { ${fields} } }`;
-      return await client.query({ query });
+      const { data } = await client.query({ query });
+      return data;
     });
   }
 
@@ -51,13 +55,13 @@ export class AuthService {
     }
   }
 
-  static async logout(data) {
-    const { fields } = data;
+  static async logout(request) {
+    const { fields } = request;
     const mutation = gql`mutation { logout { ${fields} } }`;
 
     localStorage.removeItem("currentUser");
     document.location.replace("/signIn");
-
-    return await client.mutate({ mutation });
+    const { data } = await client.mutate({ mutation });
+    return data;
   }
 }
