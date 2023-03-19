@@ -51,8 +51,13 @@ export class AuthService {
     }
   }
 
-  static logout() {
+  static async logout(data) {
+    const { fields } = data;
+    const mutation = gql`mutation { logout { ${fields} } }`;
+
     localStorage.removeItem("currentUser");
     document.location.replace("/signIn");
+
+    return await client.mutate({ mutation });
   }
 }

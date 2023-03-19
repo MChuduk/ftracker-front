@@ -12,13 +12,9 @@ const DashboardPage = () => {
   });
   const { logout, getCurrentUser, dispatchGraphqlRequest } = useAuth();
 
-  const logoutHandler = () => {
-    logout((error, data) => {
-      if (error) {
-        return;
-      }
-      navigate("/signIn");
-    });
+  const logoutHandler = async () => {
+    const logoutData = await AuthService.logout({ fields: "id" });
+    console.log("logout data", logoutData);
   };
 
   const currentUserHandler = async () => {
