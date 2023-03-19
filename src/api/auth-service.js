@@ -42,7 +42,7 @@ export class AuthService {
     } catch (error) {
       if (matchGraphqlError(error, GRAPHQL_ERRORS.UNAUTHENTICATED)) {
         if (refresh) {
-          this.logout();
+          this.logout({ fileds: "id" });
           return;
         }
         await this.refreshTokens({ fields: "id" });
