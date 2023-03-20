@@ -7,6 +7,7 @@ import { AuthService } from "../../../api/auth-service";
 import { WalletsService } from "../../../api/wallet-service";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "../../../components/Dropdown";
 
 const CreateWalletPage = () => {
   const navigate = useNavigate();
@@ -39,6 +40,10 @@ const CreateWalletPage = () => {
     }
   };
 
+  const onItemSelected = (item) => {
+    console.log("selected item: ", item);
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.mainColumn}>
@@ -68,6 +73,7 @@ const CreateWalletPage = () => {
               }),
             }}
           />
+          <Dropdown options={['option 1', 'option 2']} setSelected={onItemSelected} />
           <AccentHorizontalLine spacing="15px" />
           <AccentButton
             value="Create wallet"
