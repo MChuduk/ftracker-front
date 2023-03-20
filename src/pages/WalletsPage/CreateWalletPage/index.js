@@ -6,13 +6,15 @@ import { useForm } from "react-hook-form";
 import { AuthService } from "../../../api/auth-service";
 import { WalletsService } from "../../../api/wallet-service";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateWalletPage = () => {
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset
+    reset,
   } = useForm({ reValidateMode: "onBlur" });
   const [loading, setLoading] = useState(false);
 
@@ -24,10 +26,14 @@ const CreateWalletPage = () => {
       });
       data.userId = currentUser.id;
 
-      const result = await WalletsService.create({ fields: "id", ...data });
-      console.log("result", result);
+      const { createWallet } = await WalletsService.create({
+        fields: "id name",
+        ...data,
+      });
       reset();
+      navigate("/wallets", { replace: true });
     } catch (error) {
+      console.log(error);
     } finally {
       setLoading(false);
     }
