@@ -58,6 +58,7 @@ const CreateWalletPage = () => {
             name="name"
             errors={errors}
             invert
+            fontWeight="400"
             inputProps={{
               ...register("name", {
                 required: "Name is required.",
@@ -73,7 +74,7 @@ const CreateWalletPage = () => {
               }),
             }}
           />
-          <Dropdown options={['option 1', 'option 2']} setSelected={onItemSelected} />
+          <Dropdown label="Currency" options={['option 1', 'option 2']} width="90px" setSelected={onItemSelected} />
           <AccentHorizontalLine spacing="15px" />
           <AccentButton
             value="Create wallet"

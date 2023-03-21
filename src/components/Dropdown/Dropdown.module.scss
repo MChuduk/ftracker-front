@@ -1,4 +1,6 @@
 .dropdown {
+  display: flex;
+  flex-direction: column;
   user-select: none;
   cursor: pointer;
 }
@@ -42,11 +44,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 8px;
   background-color: rgb(243, 243, 243);
   border: 1px #d8dee4 solid;
   font-size: 14px;
   border-radius: 6px;
+}
+
+label {
+  color: #414141;
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 @keyframes fadeIn {

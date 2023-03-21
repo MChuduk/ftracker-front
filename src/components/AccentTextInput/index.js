@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import styles from "./AccentTextInput.module.scss";
 
-const AccentTextInput = ({ label, invert, inputProps, name, errors = {} }) => {
+const AccentTextInput = ({ label, invert, inputProps, name, fontWeight, errors = {} }) => {
   return (
     <div className={styles.wrapper}>
       <label>{label}</label>
@@ -10,6 +10,7 @@ const AccentTextInput = ({ label, invert, inputProps, name, errors = {} }) => {
         className={errors[name] ? styles.error : null}
         style={{
           backgroundColor: invert ? "#f3f3f3" : null,
+          fontWeight,
         }}
       ></input>
       <ErrorMessage
