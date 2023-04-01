@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import styles from "./Dropdown.module.scss";
 
-const Dropdown = ({ label, options, width }) => {
+const Dropdown = ({label, options, width, onSelected, selected}) => {
   const dropdownRef = useRef();
-  const [selected, setSelected] = useState(options[0]);
   const [isOpened, setIsOpened] = useState(false);
 
   const onItemClickHandler = (item) => {
-    setSelected(item);
+    onSelected(item);
     setIsOpened(false);
   };
 
@@ -24,32 +23,32 @@ const Dropdown = ({ label, options, width }) => {
   }, []);
 
   return (
-    <div className={styles.dropdown}>
-      {label && <label>{label}</label>}
-      <div
-        ref={dropdownRef}
-        style={{ width }}
-        onClick={() => setIsOpened((prev) => !prev)}
-      >
-        <div className={styles.dropdownButton}>
-          {selected}
-          <div className={styles.carret} />
-        </div>
-        {isOpened && (
-          <div className={styles.dropdownContent}>
-            {options.map((option) => (
-              <div
-                className={styles.dropdownItem}
-                onClick={() => onItemClickHandler(option)}
-              >
-                {option}
-              </div>
-            ))}
+      <div className={styles.dropdown}>
+        {label && <label>{label}</label>}
+        <div
+            ref={dropdownRef}
+            style={{width}}
+            onClick={() => setIsOpened((prev) => !prev)}
+        >
+          <div className={styles.dropdownButton}>
+            {selected}
+            <div className={styles.carret}/>
           </div>
-        )}
+          {isOpened && (
+              <div className={styles.dropdownContent}>
+                {options.map((option) => (
+                    <div
+                        className={styles.dropdownItem}
+                        onClick={() => onItemClickHandler(option)}
+                    >
+                      {option}
+                    </div>
+                ))}
+              </div>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
-export { Dropdown };
+export {Dropdown};

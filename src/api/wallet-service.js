@@ -1,19 +1,19 @@
-import { gql } from "@apollo/client";
-import { client } from "./apollo-client";
-import { AuthService } from "./auth-service";
+import {gql} from "@apollo/client";
+import {client} from "./apollo-client";
+import {AuthService} from "./auth-service";
 
 export class WalletsService {
   static async getAllWallets(request) {
     return await AuthService.dispatchGraphqlRequest(async () => {
-      const { fields, userId } = request;
-      const input = { userId };
+      const {fields, userId} = request;
+      const input = {userId};
       const query = gql`
         query ($input: GetAllWalletsDto!) {
           getAllWallets(input: $input) { ${fields} }
       }`;
-      const { data } = await client.query({
+      const {data} = await client.query({
         query,
-        variables: { input },
+        variables: {input},
         fetchPolicy: "network-only",
       });
       return data;
@@ -22,13 +22,14 @@ export class WalletsService {
 
   static async create(request) {
     return await AuthService.dispatchGraphqlRequest(async () => {
-      const { fields, name, userId } = request;
-      const input = { name, userId };
+      const {fields, name, currencyId, userId} = request;
+      const input = {name, currencyId, userId};
+      console.log("input", input)
       const mutation = gql`
-          mutation ($input: CreateWalletDto!) {
+          mutation ($input: CreateWalletRequestDto!) {
             createWallet(input: $input) { ${fields} }
         }`;
-      const { data } = await client.mutate({ mutation, variables: { input } });
+      const {data} = await client.mutate({mutation, variables: {input}});
       return data;
     });
   }
