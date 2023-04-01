@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { AuthService } from "../../api/auth-service";
 
 const RequireAuth = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { getCurrentUser } = useAuth();
 
   useEffect(() => {
-    getCurrentUser((error, user) => {
-      console.log("current user", user);
-      if (user) {
-        setUser(user); 
-      }
+    const fetchUser = async () => {
+      const { currentUser } = await AuthService.getCurrentUser({ fields: "id" });
+      setUser(currentUser);
       setLoading(false);
-    });
+    }
+    fetchUser();
   }, []);
 
   if (loading) return;

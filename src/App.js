@@ -5,6 +5,7 @@ import { WalletsPage } from "./pages/WalletsPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { RequireAuth } from "./components/RequireAuth";
 import { Layout } from "./components/Layout";
+import { CreateWalletPage } from "./pages/WalletsPage/CreateWalletPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="wallets" element={<WalletsPage />} />
+          <Route path="wallets/new" element={<CreateWalletPage/>} />
         </Route>
       </Routes>
     </>

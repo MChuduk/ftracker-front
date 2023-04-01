@@ -2,15 +2,14 @@ import styles from "./SignUpForm.module.scss";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { AccentTextInput } from "../../AccentTextInput";
-import { AcccentButton } from "../../AccentButton";
+import { AccentButton } from "../../AccentButton";
 import { AccentErrorBox } from "../../AccentErrorBox";
+import { AuthService } from "../../../api/auth-service";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const { signUp } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -24,18 +23,18 @@ const SignUpForm = () => {
     clearErrors,
   } = useForm({ reValidateMode: "onSubmit" });
 
-  const onSubmit = (data) => {
-    setLoading(true);
-    signUp(data, (error, response) => {
-      setLoading(false);
-      if (error) {
-        setError("email", error);
-        return;
-      }
-      console.log("response: ", response);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      await AuthService.signUp({ fields: "id", ...data });
       navigate("/signIn", { replace: true });
       reset();
-    });
+    } catch (error) {
+      console.log(error);
+      setError("email", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getError = () => {
@@ -139,7 +138,7 @@ const SignUpForm = () => {
             type: "password",
           }}
         />
-        <AcccentButton
+        <AccentButton
           value={loading ? "Signing Up..." : "Sign Up"}
           buttonProps={{ type: "submit", disabled: loading }}
         />

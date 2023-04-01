@@ -1,16 +1,15 @@
-import { useMutation } from "@apollo/client";
+
 import { ErrorMessage } from "@hookform/error-message";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
-import { AcccentButton } from "../../AccentButton";
+import { AuthService } from "../../../api/auth-service";
+import { AccentButton } from "../../AccentButton";
 import { AccentErrorBox } from "../../AccentErrorBox";
 import { AccentTextInput } from "../../AccentTextInput";
 import styles from "./SignInForm.module.scss";
 
 function SignInForm() {
-  const { signIn } = useAuth();
   const {
     register,
     formState: { errors },
@@ -26,18 +25,17 @@ function SignInForm() {
 
   const fromPage = location.state?.from?.pathname || "/";
 
-  const onSubmit = (data) => {
-    setLoading(true);
-    signIn(data, (error, response) => {
-      setLoading(false);
-      if (error) {
-        setError("email", error);
-        return;
-      }
-      console.log("response: ", response);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      await AuthService.signIn({ fields: "id", ...data })
       navigate(fromPage, { replace: true });
       reset();
-    });
+    } catch (error) {
+      setError("email", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getError = () => {
@@ -112,7 +110,7 @@ function SignInForm() {
             type: "password",
           }}
         />
-        <AcccentButton
+        <AccentButton
           value={loading ? "Signing In..." : "Sign In"}
           buttonProps={{ type: "submit", disabled: loading }}
         />
