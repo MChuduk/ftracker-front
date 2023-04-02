@@ -3,16 +3,17 @@
   flex-direction: column;
   user-select: none;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .dropdown .dropdownContent {
   position: absolute;
-  padding: 0px;
+  padding: 0;
   background-color: #fff;
   border: 1px #d8dee4 solid;
   border-radius: 6px;
   font-size: 14px;
-  margin-top: 8px;
+  margin-top: 2px;
   animation: fadeIn 0.1s ease-in-out;
 }
 
@@ -23,9 +24,11 @@
   &:hover {
     background-color: #f3f3f3;
   }
+
   &:first-child {
     border-radius: 6px 6px 0 0;
   }
+
   &:last-child {
     border-radius: 0 0 6px 6px;
   }
@@ -44,8 +47,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
-  background-color: rgb(243, 243, 243);
+  padding: 7px;
+  background-color: white;
   border: 1px #d8dee4 solid;
   font-size: 14px;
   border-radius: 6px;
@@ -65,6 +68,6 @@ label {
   }
   100% {
     opacity: 1;
-    margin-top: 8px;
+    margin-top: 2px;
   }
 }

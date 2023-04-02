@@ -11,4 +11,13 @@ export class TransactionCategoriesService {
       return data;
     });
   }
+
+  static async getTransactionCategories(request) {
+    return await AuthService.dispatchGraphqlRequest(async () => {
+      const {fields} = request;
+      const query = getQuery('transactionCategories', fields);
+      const {data} = await client.query({query, fetchPolicy: 'network-only'});
+      return data;
+    });
+  }
 }

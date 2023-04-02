@@ -48,7 +48,7 @@ const AccentHeader = () => {
           <Link className={styles.pageLink} to="wallets">
             Wallets
           </Link>
-          <Link className={styles.pageLink}>Transactions</Link>
+          <Link className={styles.pageLink} to="transactions">Transactions</Link>
           <Link className={styles.pageLink}>Categories</Link>
           <Link className={styles.pageLink}>History</Link>
         </div>

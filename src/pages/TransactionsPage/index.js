@@ -1,0 +1,5 @@
+const TransactionsPage = () => {
+  
+}
+
+export {TransactionsPage};
