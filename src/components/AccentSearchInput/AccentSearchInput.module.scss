@@ -1,0 +1,18 @@
+.search {
+}
+
+.input {
+  border: 1px solid #919191;
+  border-radius: 6px;
+  background-color: #24292f;
+  padding: 5px;
+  color: #919191;
+
+  &::placeholder {
+    color: #f5f5f5;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
