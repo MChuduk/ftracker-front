@@ -1,7 +1,7 @@
 import {ErrorMessage} from "@hookform/error-message";
 import styles from "./AccentTextInput.module.scss";
 
-const AccentTextInput = ({label, type = 'text', width, inputProps, name, fontWeight, errors = {}}) => {
+const AccentTextInput = ({label, type = 'text', width, inputProps, name, value, fontWeight, errors = {}}) => {
   return (
       <div className={styles.wrapper} style={{width}}>
         <label>{label}</label>
@@ -11,6 +11,7 @@ const AccentTextInput = ({label, type = 'text', width, inputProps, name, fontWei
             style={{
               fontWeight,
             }}
+            value={value}
             type={type}
         ></input>
         <ErrorMessage

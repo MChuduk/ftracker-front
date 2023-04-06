@@ -7,12 +7,16 @@ import {WalletsService} from "../../../api/wallet-service";
 import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import {AccentErrorBox} from "../../../components/AccentErrorBox";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {Spinner} from "../../../components/Spinner";
 import {TransactionCategoriesService} from "../../../api/transaction-categories-service";
 import {TransactionService} from "../../../api/transaction-service";
+import {getFormattedDate} from "../../../utils/date-utils";
 
 const CreateTransactionPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const {defaultCategory, defaultDate} = location.state;
   const [loading, setLoading] = useState(false);
   const [wallets, setWallets] = useState([]);
   const [transactionCategories, setTransactionCategories] = useState([]);
@@ -24,24 +28,32 @@ const CreateTransactionPage = () => {
     handleSubmit,
     reset,
   } = useForm({reValidateMode: "onBlur"});
+
   const onSubmit = async (data) => {
-    console.log(selectedWallet);
+    data.categoryId = transactionCategories.find(category => category.name === selectedTransactionCategory).id;
     data.walletId = wallets.find(wallet => wallet.name === selectedWallet).id;
-    data.amount = +data.amount;
     console.log(data);
 
-    await TransactionService.create({fields: 'id', ...data});
+    try {
+      await TransactionService.create({fields: 'id', ...data});
+      navigate('/dashboard');
+    } catch (error) {
+    } finally {
+      reset();
+    }
   };
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const {wallets} = await WalletsService.getAllWallets({fields: "id name currencyId"})
-      const {transactionCategories} = await TransactionCategoriesService.getTransactionCategories({fields: "id name"});
+      const [{wallets}, {transactionCategories}] = await Promise.all([
+        WalletsService.getAllWallets({fields: "id name currencyId"}),
+        TransactionCategoriesService.getTransactionCategories({fields: "id name"}),
+      ]);
       setWallets(wallets);
       setTransactionCategories(transactionCategories);
       setSelectedWallet(wallets[0].name);
-      setSelectedTransactionCategory(transactionCategories[0].name);
+      setSelectedTransactionCategory(defaultCategory || transactionCategories[0].name);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -51,6 +63,13 @@ const CreateTransactionPage = () => {
   useEffect(() => {
     fetchData();
   }, [])
+
+  useEffect(() => {
+    reset({
+      date: defaultDate ? getFormattedDate(defaultDate) : '',
+    });
+  }, [reset]);
+
 
   if (loading) return (
       <div className={styles.wrapper}>
@@ -107,9 +126,11 @@ const CreateTransactionPage = () => {
                   errors={errors}
                   width="150px"
                   fontWeight="400"
+                  type='number'
                   inputProps={{
                     ...register("amount", {
                       required: "Amount is required.",
+                      valueAsNumber: true,
                     }),
                   }}
               />

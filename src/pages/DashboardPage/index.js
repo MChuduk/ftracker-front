@@ -7,6 +7,7 @@ import {TransactionCategoriesService} from "../../api/transaction-categories-ser
 import {Link} from "react-router-dom";
 
 const DashboardPage = () => {
+  const currentDate = new Date();
   const [transactionCategories, setTransactionCategories] = useState([]);
 
   const fetchTransactionCategories = async () => {
@@ -29,12 +30,14 @@ const DashboardPage = () => {
           <button onClick={logoutHandler}>logout</button>
         </div>
         <div className={styles.mainColumn}>
-          <p className={styles.label}><strong>{new Date().toDateString()}</strong></p>
+          <p className={styles.label}><strong>{currentDate.toDateString()}</strong></p>
           <AccentHorizontalLine/>
           <div className={styles.transactionCategoriesSection}>
-            {transactionCategories.map(category => <Link style={{textDecoration: 'none'}}
-                                                         to="/transactions/new"><TransactionCategoryButton
-                key={category.id} category={category}/></Link>)}
+            {transactionCategories.map(category =>
+                <Link style={{textDecoration: 'none'}}
+                      state={{defaultCategory: category.name, defaultDate: currentDate}}
+                      to="/transactions/new"><TransactionCategoryButton key={category.id} category={category}/>
+                </Link>)}
           </div>
         </div>
         <div className={styles.leftColumn}>

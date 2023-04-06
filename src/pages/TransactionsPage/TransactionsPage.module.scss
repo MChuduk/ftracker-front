@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  height: calc(100vh - 85px);
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  padding: 10px 5px 5px 5px;
+}
+
+.transactionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  strong {
+    margin-right: 10px;
+  }
+
+  .transactionItemInfo {
+    display: flex;
+    font-size: 18px;
+    flex-direction: column;
+  }
+
+  .transactionItemButtons {
+    display: flex;
+  }
+
+  label {
+    margin-top: 8px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+}
