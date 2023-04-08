@@ -22,7 +22,8 @@ const DashboardPage = () => {
   const [latestTransactions, setLatestTransactions] = useState([]);
   const [transactionCategories, setTransactionCategories] = useState([]);
   const currentDate = new Date();
-  const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+  const [hours, minutes] = currentDate.toLocaleTimeString().split(':');
+  const currentTime = `${hours}:${minutes}`;
 
   const fetchData = async () => {
     try {

@@ -40,7 +40,6 @@ const CreateTransactionPage = () => {
     delete data.time;
     data.categoryId = transactionCategories.find(category => category.name === selectedTransactionCategory).id;
     data.walletId = wallets.find(wallet => wallet.name === selectedWallet).id;
-    console.log(getFormattedDate(data.date));
 
     try {
       await TransactionService.create({fields: 'id', ...data, date: date.toISOString()});
@@ -67,14 +66,6 @@ const CreateTransactionPage = () => {
       setLoading(false);
     }
   }
-
-  // var date = new Date()
-  //
-  // var currentDate = date.toISOString().substring(0, 10);
-  // var currentTime = date.toISOString().substring(11, 16);
-  // console.log(date)
-  // console.log(currentDate)
-  // console.log(currentTime)
 
   useEffect(() => {
     fetchData();
