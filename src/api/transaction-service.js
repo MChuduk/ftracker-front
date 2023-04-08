@@ -7,9 +7,12 @@ export class TransactionService {
   static async getAll(request) {
     return await AuthService.dispatchGraphqlRequest(async () => {
       const {fields} = request;
-      const query = getQuery('transactions', fields);
+      console.log(request);
+      delete request.fields;
+      const query = getQuery('transactions', fields, 'TransactionQueryRequestDto');
       const {data} = await client.query({
-        query
+        query,
+        variables: {request},
       });
       return data;
     });

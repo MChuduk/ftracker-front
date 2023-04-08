@@ -12,11 +12,12 @@ import {Spinner} from "../../../components/Spinner";
 import {TransactionCategoriesService} from "../../../api/transaction-categories-service";
 import {TransactionService} from "../../../api/transaction-service";
 import {getFormattedDate} from "../../../utils/date-utils";
+import {collectSpecifierPaths} from "@apollo/client/cache/inmemory/key-extractor";
 
 const CreateTransactionPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const {defaultCategory, defaultDate} = location.state;
+  const {defaultCategory, defaultDate, defaultTime} = location.state;
   const [loading, setLoading] = useState(false);
   const [wallets, setWallets] = useState([]);
   const [transactionCategories, setTransactionCategories] = useState([]);
@@ -29,13 +30,20 @@ const CreateTransactionPage = () => {
     reset,
   } = useForm({reValidateMode: "onBlur"});
 
+
   const onSubmit = async (data) => {
+    const date = new Date(data.date);
+    const [hours, minutes] = data.time.split(':');
+    date.setHours(+hours);
+    date.setMinutes(+minutes);
+    date.setSeconds(new Date().getSeconds());
+    delete data.time;
     data.categoryId = transactionCategories.find(category => category.name === selectedTransactionCategory).id;
     data.walletId = wallets.find(wallet => wallet.name === selectedWallet).id;
-    console.log(data);
+    console.log(getFormattedDate(data.date));
 
     try {
-      await TransactionService.create({fields: 'id', ...data});
+      await TransactionService.create({fields: 'id', ...data, date: date.toISOString()});
       navigate('/dashboard');
     } catch (error) {
     } finally {
@@ -60,6 +68,14 @@ const CreateTransactionPage = () => {
     }
   }
 
+  // var date = new Date()
+  //
+  // var currentDate = date.toISOString().substring(0, 10);
+  // var currentTime = date.toISOString().substring(11, 16);
+  // console.log(date)
+  // console.log(currentDate)
+  // console.log(currentTime)
+
   useEffect(() => {
     fetchData();
   }, [])
@@ -67,6 +83,7 @@ const CreateTransactionPage = () => {
   useEffect(() => {
     reset({
       date: defaultDate ? getFormattedDate(defaultDate) : '',
+      time: defaultTime,
     });
   }, [reset]);
 
@@ -136,19 +153,35 @@ const CreateTransactionPage = () => {
               />
             </div>
             <AccentHorizontalLine spacing="25px"/>
-            <AccentTextInput
-                label="Date"
-                name="date"
-                type="date"
-                errors={errors}
-                width="150px"
-                fontWeight="400"
-                inputProps={{
-                  ...register("date", {
-                    required: "Date is required.",
-                  }),
-                }}
-            />
+            <div style={{display: 'flex'}}>
+              <AccentTextInput
+                  label="Date"
+                  name="date"
+                  type="date"
+                  errors={errors}
+                  width="150px"
+                  fontWeight="400"
+                  inputProps={{
+                    ...register("date", {
+                      required: "Date is required.",
+                    }),
+                  }}
+              />
+              <span style={{margin: '0 10px 0 10px', alignSelf: 'center'}}>/</span>
+              <AccentTextInput
+                  label="Time"
+                  name="time"
+                  type="time"
+                  errors={errors}
+                  width="70px"
+                  fontWeight="400"
+                  inputProps={{
+                    ...register("time", {
+                      required: "Time is required.",
+                    }),
+                  }}
+              />
+            </div>
             <Dropdown label="Category" width="150px"
                       options={transactionCategories.map(category => category.name)}
                       selected={selectedTransactionCategory}
