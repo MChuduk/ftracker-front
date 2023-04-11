@@ -13,6 +13,9 @@ const WalletsPage = () => {
   const [wallets, setWallets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({});
+  const date = new Date();
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   const fetchData = async () => {
     try {
@@ -27,10 +30,8 @@ const WalletsPage = () => {
           StatsService.getWalletStatsByDates({
             fields: 'dates { date amount }',
             walletId: wallet.id,
-            dateBetween: {
-              startDate: '2023-04-01',
-              endDate: '2023-04-28'
-            }
+            fromDate: firstDay.toISOString(),
+            toDate: lastDay.toISOString(),
           }),
         ]);
 
@@ -45,6 +46,14 @@ const WalletsPage = () => {
       console.log("error", error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  const onRemoveHandler = async (wallet) => {
+    try {
+      await WalletsService.delete({fields: 'id', walletId: wallet.id});
+      setWallets(wallets.filter(x => x.id !== wallet.id));
+    } catch (error) {
     }
   }
 
@@ -74,7 +83,7 @@ const WalletsPage = () => {
           <AccentHorizontalLine spacing='10px'/>
           <div>
             {wallets.map((wallet) => (
-                <WalletCard key={wallet.id} wallet={wallet} stats={stats[wallet.id]}/>
+                <WalletCard key={wallet.id} wallet={wallet} stats={stats[wallet.id]} onRemove={onRemoveHandler}/>
             ))}
           </div>
         </div>

@@ -8,6 +8,26 @@ import {Layout} from "./components/Layout";
 import {CreateWalletPage} from "./pages/WalletsPage/CreateWalletPage";
 import {TransactionsPage} from "./pages/TransactionsPage";
 import {CreateTransactionPage} from "./pages/TransactionsPage/CreateTransactionPage";
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip
+} from "chart.js";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 function App() {
   return (

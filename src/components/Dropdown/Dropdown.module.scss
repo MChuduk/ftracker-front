@@ -34,6 +34,26 @@
   }
 }
 
+.name {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close {
+  width: 14px;
+  height: 14px;
+
+  * {
+    fill: #57606a;
+  }
+
+  &:hover {
+    * {
+      fill: rgb(255, 118, 118);
+    }
+  }
+}
+
 .carret {
   position: relative;
   width: 0;

@@ -12,6 +12,9 @@ import {TransactionCategoryTag} from "../../components/TransactionCategoryTag";
 import {AccentLightButton} from "../../components/AccentLightButton";
 import {getFormattedDate, getRelativeTimeString} from "../../utils/date-utils";
 import {AccentGroup} from "../../components/AccentGroup";
+import {Dropdown} from "../../components/Dropdown";
+import {BudgetStats} from "../../components/BudgetStats";
+import {CurrencyService} from "../../api/currency-service";
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(false);
@@ -21,6 +24,7 @@ const DashboardPage = () => {
   });
   const [latestTransactions, setLatestTransactions] = useState([]);
   const [transactionCategories, setTransactionCategories] = useState([]);
+  const [currency, setCurrency] = useState([]);
   const currentDate = new Date();
   const [hours, minutes] = currentDate.toLocaleTimeString().split(':');
   const currentTime = `${hours}:${minutes}`;
@@ -28,16 +32,18 @@ const DashboardPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [{transactions}, {defaultTransactionCategories}] = await Promise.all([
+      const [{transactions}, {defaultTransactionCategories}, {currency}] = await Promise.all([
         TransactionService.getAll({
           fields: 'id description date',
           dateOrder: 'DESC',
           pagination: latestTransactionsPagination
         }),
         TransactionCategoriesService.getDefaultTransactionCategories({fields: 'id name color svgPath'}),
+        CurrencyService.getAll({fields: 'id type'})
       ]);
       setLatestTransactions(transactions);
       setTransactionCategories(defaultTransactionCategories);
+      setCurrency(currency)
     } catch (error) {
     } finally {
       setLoading(false);
@@ -84,6 +90,8 @@ const DashboardPage = () => {
                       to="/transactions/new"><TransactionCategoryButton key={category.id} category={category}/>
                 </Link>)}
           </div>
+          <AccentHorizontalLine spacing='20px'/>
+          <BudgetStats currency={currency}/>
         </div>
         <div className={styles.leftColumn}>
           <p className={styles.label}><strong>Latest transactions</strong></p>

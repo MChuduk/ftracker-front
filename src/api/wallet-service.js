@@ -25,4 +25,14 @@ export class WalletsService {
       return data;
     });
   }
+
+  static async delete(request) {
+    return await AuthService.dispatchGraphqlRequest(async () => {
+      const {fields} = request;
+      delete request.fields;
+      const mutation = getMutation('deleteWallet', fields, 'WalletDeleteRequestDto!')
+      const {data} = await client.mutate({mutation, variables: {request}});
+      return data;
+    });
+  }
 }

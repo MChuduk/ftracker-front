@@ -2,33 +2,15 @@ import {Link} from "react-router-dom";
 import styles from "./WalletCard.module.scss";
 import {AccentHorizontalLine} from "../AccentHorizontalLine";
 import {AccentLightButton} from "../AccentLightButton";
-import {
-  CategoryScale,
-  Chart as ChartJS, Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip
-} from "chart.js";
 import {Line} from "react-chartjs-2";
-import {useState} from "react";
-import {Spinner} from "../Spinner";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
-
-export const options = {
+const options = {
   responsive: false,
   animation: {
     duration: 0,
+  },
+  hover: {
+    mode: null
   },
   scales: {
     y: {
@@ -39,6 +21,9 @@ export const options = {
     }
   },
   plugins: {
+    tooltip: {
+      enabled: false
+    },
     legend: {
       display: false,
     },
@@ -47,7 +32,7 @@ export const options = {
     },
   },
 };
-const WalletCard = ({wallet, stats}) => {
+const WalletCard = ({wallet, stats, onRemove}) => {
   const labels = stats.dates.map(x => x.date);
 
   const data = {
@@ -71,10 +56,10 @@ const WalletCard = ({wallet, stats}) => {
           </div>
           <div className={styles.rightSide}>
             <div>
-              <AccentLightButton content='Remove'/>
+              <AccentLightButton content='Remove' onClick={() => onRemove(wallet)}/>
             </div>
             <div className={styles.graph}>
-              <Line height={50} options={options} data={data}/>
+              <Line width={200} height={50} options={options} data={data}/>
             </div>
           </div>
         </div>
