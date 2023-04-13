@@ -7,14 +7,12 @@ import {TransactionCategoriesService} from "../../api/transaction-categories-ser
 import {Link} from "react-router-dom";
 import {Spinner} from "../../components/Spinner";
 import {TransactionService} from "../../api/transaction-service";
-import {AccentList} from "../../components/AccentList";
-import {TransactionCategoryTag} from "../../components/TransactionCategoryTag";
-import {AccentLightButton} from "../../components/AccentLightButton";
-import {getFormattedDate, getRelativeTimeString} from "../../utils/date-utils";
+import {getRelativeTimeString} from "../../utils/date-utils";
 import {AccentGroup} from "../../components/AccentGroup";
-import {Dropdown} from "../../components/Dropdown";
 import {BudgetStats} from "../../components/BudgetStats";
 import {CurrencyService} from "../../api/currency-service";
+import {StatsService} from "../../api/stats-service";
+import {WalletsService} from "../../api/wallet-service";
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(false);
@@ -22,37 +20,64 @@ const DashboardPage = () => {
     page: 0,
     limit: 4,
   });
+  const [wallets, setWallets] = useState([]);
+  const [selectedWallet, setSelectedWallet] = useState(null);
+  const [userBudgetReport, setUserBudgetReport] = useState(null);
   const [latestTransactions, setLatestTransactions] = useState([]);
   const [transactionCategories, setTransactionCategories] = useState([]);
   const [currency, setCurrency] = useState([]);
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
   const currentDate = new Date();
   const [hours, minutes] = currentDate.toLocaleTimeString().split(':');
   const currentTime = `${hours}:${minutes}`;
 
+
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [{transactions}, {defaultTransactionCategories}, {currency}] = await Promise.all([
+      const [{transactions}, {defaultTransactionCategories}, {currency}, {wallets}] = await Promise.all([
         TransactionService.getAll({
-          fields: 'id description date',
+          fields: 'id description date createdAt',
           dateOrder: 'DESC',
           pagination: latestTransactionsPagination
         }),
         TransactionCategoriesService.getDefaultTransactionCategories({fields: 'id name color svgPath'}),
-        CurrencyService.getAll({fields: 'id type'})
+        CurrencyService.getAll({fields: 'id type'}),
+        WalletsService.getAllWallets({fields: 'id name'}),
       ]);
       setLatestTransactions(transactions);
       setTransactionCategories(defaultTransactionCategories);
       setCurrency(currency)
+      setWallets(wallets);
+      setSelectedWallet(wallets[0].name);
+      setSelectedCurrency(currency[0].type);
+      await fetchReport();
     } catch (error) {
     } finally {
       setLoading(false);
     }
   }
 
+  const fetchReport = async () => {
+    const walletId = wallets.find(wallet => wallet.name === selectedWallet)?.id;
+    const currencyId = currency.find(currency => currency.type === selectedCurrency)?.id;
+    if (walletId && currencyId) {
+      const {userBudgetReport} = await StatsService.getUserBudgetReport({
+        fields: 'data { date totalAmount }',
+        walletId,
+        currencyId
+      })
+      setUserBudgetReport(userBudgetReport);
+    }
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchReport();
+  }, [selectedWallet, selectedCurrency])
 
   const logoutHandler = async () => {
     await AuthService.logout({fields: 'id'})
@@ -66,10 +91,9 @@ const DashboardPage = () => {
       </div>
   )
 
-
   const getLatestTransactionsView = () => {
     return latestTransactions.map(transaction => ({
-      groupName: getRelativeTimeString(new Date(transaction.date), 'en'),
+      groupName: getRelativeTimeString(new Date(+transaction.createdAt), 'en'),
       view: <div className={styles.latestTransactionDescription}>{transaction.description}</div>
     }))
   }
@@ -91,7 +115,17 @@ const DashboardPage = () => {
                 </Link>)}
           </div>
           <AccentHorizontalLine spacing='20px'/>
-          <BudgetStats currency={currency}/>
+          {userBudgetReport && (
+              <BudgetStats
+                  currency={currency}
+                  selectedCurrency={selectedCurrency}
+                  onSelectedCurrency={(currency) => setSelectedCurrency(currency)}
+                  wallets={wallets}
+                  selectedWallet={selectedWallet}
+                  onWalletSelected={(wallet) => setSelectedWallet(wallet)}
+                  report={userBudgetReport}
+              />
+          )}
         </div>
         <div className={styles.leftColumn}>
           <p className={styles.label}><strong>Latest transactions</strong></p>

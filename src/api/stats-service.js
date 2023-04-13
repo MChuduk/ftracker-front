@@ -10,7 +10,22 @@ export class StatsService {
       const query = getQuery('walletStats', fields, 'WalletStatsQueryRequestDto!');
       const {data} = await client.query({
         query,
-        variables: {request}
+        variables: {request},
+        fetchPolicy: 'network-only'
+      });
+      return data;
+    });
+  }
+
+  static async getUserBudgetReport(request) {
+    return await AuthService.dispatchGraphqlRequest(async () => {
+      const {fields} = request;
+      delete request.fields;
+      const query = getQuery('userBudgetReport', fields, 'TransactionQueryRequestDto!');
+      const {data} = await client.query({
+        query,
+        variables: {request},
+        fetchPolicy: 'network-only'
       });
       return data;
     });
