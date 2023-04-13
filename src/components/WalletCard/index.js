@@ -33,13 +33,13 @@ const options = {
   },
 };
 const WalletCard = ({wallet, stats, onRemove}) => {
-  const labels = stats.dates.map(x => x.date);
+  const labels = stats.data.map(x => x.date);
 
   const data = {
     labels,
     datasets: [
       {
-        data: stats.dates.map(x => x.amount),
+        data: stats.data.map(x => x.count),
         borderColor: 'rgb(12,155,24)',
         borderWidth: 2,
         pointRadius: 0,

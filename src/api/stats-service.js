@@ -31,14 +31,15 @@ export class StatsService {
     });
   }
 
-  static async getWalletStatsByDates(request) {
+  static async getWalletActivityReport(request) {
     return await AuthService.dispatchGraphqlRequest(async () => {
       const {fields} = request;
       delete request.fields;
-      const query = getQuery('walletStatsByDates', fields, 'WalletStatsByDatesQueryRequestDto!');
+      const query = getQuery('walletActivityReport', fields, 'WalletActivityReportQueryRequestDto!');
       const {data} = await client.query({
         query,
-        variables: {request}
+        variables: {request},
+        fetchPolicy: 'network-only'
       });
       return data;
     });

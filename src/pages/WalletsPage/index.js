@@ -13,9 +13,6 @@ const WalletsPage = () => {
   const [wallets, setWallets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({});
-  const date = new Date();
-  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   const fetchData = async () => {
     try {
@@ -25,19 +22,17 @@ const WalletsPage = () => {
       });
       let stats = {}
       for (const wallet of wallets) {
-        const [{walletStats}, {walletStatsByDates}] = await Promise.all([
+        const [{walletStats}, {walletActivityReport}] = await Promise.all([
           StatsService.getWalletStats({fields: 'totalAmount', walletId: wallet.id}),
-          StatsService.getWalletStatsByDates({
-            fields: 'dates { date amount }',
-            walletId: wallet.id,
-            fromDate: firstDay.toISOString(),
-            toDate: lastDay.toISOString(),
+          StatsService.getWalletActivityReport({
+            fields: 'data { date count }',
+            walletId: wallet.id
           }),
         ]);
 
         stats = {
           ...stats,
-          [wallet.id]: {...walletStats, ...walletStatsByDates},
+          [wallet.id]: {...walletStats, ...walletActivityReport},
         };
       }
       setWallets(wallets);
