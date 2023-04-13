@@ -61,7 +61,7 @@ const BudgetStats = ({
                 name='Select a wallet'
                 width={80}
                 contentWidth={150}
-                options={wallets.map(x => x.name)}
+                options={['All', ...wallets.map(x => x.name)]}
                 selected={selectedWallet}
                 onSelected={onWalletSelected}
             />

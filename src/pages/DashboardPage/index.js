@@ -61,7 +61,7 @@ const DashboardPage = () => {
   const fetchReport = async () => {
     const walletId = wallets.find(wallet => wallet.name === selectedWallet)?.id;
     const currencyId = currency.find(currency => currency.type === selectedCurrency)?.id;
-    if (walletId && currencyId) {
+    if (currencyId) {
       const {userBudgetReport} = await StatsService.getUserBudgetReport({
         fields: 'data { date totalAmount }',
         walletId,
