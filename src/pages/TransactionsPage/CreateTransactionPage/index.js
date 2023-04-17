@@ -12,6 +12,7 @@ import {Spinner} from "../../../components/Spinner";
 import {TransactionCategoriesService} from "../../../api/transaction-categories-service";
 import {TransactionService} from "../../../api/transaction-service";
 import {getFormattedDate} from "../../../utils/date-utils";
+import {AccentToolbar} from "../../../components/AccentToolbar";
 
 const CreateTransactionPage = () => {
   const location = useLocation();
@@ -28,9 +29,11 @@ const CreateTransactionPage = () => {
     handleSubmit,
     reset,
   } = useForm({reValidateMode: "onBlur"});
+  const [transactionType, setTransactionType] = useState('Expense');
 
 
   const onSubmit = async (data) => {
+    data.amount = (transactionType === 'Income') ? +data.amount : -+data.amount;
     data.categoryId = transactionCategories.find(category => category.name === selectedTransactionCategory).id;
     data.walletId = wallets.find(wallet => wallet.name === selectedWallet).id;
 
@@ -126,15 +129,21 @@ const CreateTransactionPage = () => {
                   errors={errors}
                   width="150px"
                   fontWeight="400"
-                  type='number'
                   inputProps={{
                     ...register("amount", {
                       required: "Amount is required.",
-                      valueAsNumber: true,
+                      pattern:{
+                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                        message: 'Please, enter a number',
+                      },
                     }),
                   }}
               />
             </div>
+            <AccentToolbar options={['Income', 'Expense']}
+                           selectedOption={transactionType}
+                           onSelectedOption={(option) => setTransactionType(option)}
+            />
             <AccentHorizontalLine spacing="25px"/>
             <AccentTextInput
                 label="Date"
