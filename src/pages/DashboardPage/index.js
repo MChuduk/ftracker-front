@@ -20,6 +20,7 @@ const DashboardPage = () => {
     page: 0,
     limit: 4,
   });
+  const [currentUser, setCurrentUser] = useState(null);
   const [wallets, setWallets] = useState([]);
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [userBudgetReport, setUserBudgetReport] = useState(null);
@@ -35,6 +36,7 @@ const DashboardPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      const {currentUser} = await AuthService.getCurrentUser({fields: 'id email displayName'});
       const [{transactions}, {defaultTransactionCategories}, {currency}, {wallets}] = await Promise.all([
         TransactionService.getAll({
           fields: 'id description date createdAt',
@@ -42,9 +44,10 @@ const DashboardPage = () => {
           pagination: latestTransactionsPagination
         }),
         TransactionCategoriesService.getDefaultTransactionCategories({fields: 'id name color svgPath'}),
-        CurrencyService.getAll({fields: 'id type'}),
+        CurrencyService.getAll({fields: 'id type rate updatedAt'}),
         WalletsService.getAllWallets({fields: 'id name'}),
       ]);
+      setCurrentUser(currentUser);
       setLatestTransactions(transactions);
       setTransactionCategories(defaultTransactionCategories);
       setCurrency(currency)
@@ -83,7 +86,7 @@ const DashboardPage = () => {
     await AuthService.logout({fields: 'id'})
   }
 
-  if (loading) return (
+  if (loading || !currentUser) return (
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
           <center><Spinner/></center>
@@ -98,10 +101,31 @@ const DashboardPage = () => {
     }))
   }
 
+  const getCurrencyRatesView = () => {
+    return [{
+      groupName: getRelativeTimeString(new Date(+currency[0].updatedAt), 'en'),
+      view:
+          <div>
+            {currency.map((currency, index) =>
+                <div className={styles.currencyRateLabel} key={index}>
+                  {currency.type}
+                  <span>{currency.rate}</span>
+                </div>
+            )}
+          </div>
+    }]
+  }
+
   return (
       <div className={styles.wrapper}>
         <div className={styles.rightPanel}>
-          <p className={styles.label}>Test</p>
+          <span className={styles.userName}>{currentUser.displayName}</span>
+          <AccentHorizontalLine spacing='10px' />
+          {wallets.map((wallet, index) => (
+              <Link className={styles.walletLink} to={`/wallets/${wallet.id}/settings`} key={index}>
+                {wallet.name}
+              </Link>
+          ))}
           <button onClick={logoutHandler}>logout</button>
         </div>
         <div className={styles.mainColumn}>
@@ -130,6 +154,8 @@ const DashboardPage = () => {
         <div className={styles.leftColumn}>
           <p className={styles.label}><strong>Latest transactions</strong></p>
           <AccentGroup items={getLatestTransactionsView()}/>
+          <p className={styles.label}><strong>Currency rates</strong></p>
+          <AccentGroup items={getCurrencyRatesView()} />
         </div>
       </div>
   );

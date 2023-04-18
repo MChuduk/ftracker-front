@@ -26,6 +26,7 @@
   flex-direction: column;
   padding: 10px 5px 5px 0;
   min-width: 500px;
+  row-gap: 20px;
 }
 
 .transactionCategoriesSection {
@@ -55,6 +56,30 @@ form {
 .latestTransactionDescription {
   margin-left: -10px;
   margin-top: -15px;
+}
+
+.userName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2f2f2f;
+}
+
+.walletLink {
+  color: #0969da;
+  text-decoration: none;
+  margin-bottom: 5px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.currencyRateLabel {
+  margin-bottom: 8px;
+
+  span {
+    padding-left: 10px;
+  }
 }
 
 @media screen and (max-width: 1000px) {
