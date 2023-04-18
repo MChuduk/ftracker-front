@@ -8,8 +8,10 @@ import {WalletCard} from "../../components/WalletCard";
 import {Spinner} from "../../components/Spinner";
 import {StatsService} from "../../api/stats-service";
 import {AccentHorizontalLine} from "../../components/AccentHorizontalLine";
+import {AuthService} from "../../api/auth-service";
 
 const WalletsPage = () => {
+  const [_, setCurrentUser] = useState(null);
   const [wallets, setWallets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({});
@@ -17,17 +19,19 @@ const WalletsPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      const {currentUser} = await AuthService.getCurrentUser({fields: 'id'});
       const {wallets} = await WalletsService.getAllWallets({
         fields: "id name currency { type }",
+        userId: currentUser.id
       });
       let stats = {}
       for (const wallet of wallets) {
         const [{walletStats}, {walletActivityReport}] = await Promise.all([
-          StatsService.getWalletStats({fields: 'totalAmount', walletId: wallet.id}),
-          StatsService.getWalletActivityReport({
-            fields: 'data { date count }',
-            walletId: wallet.id
-          }),
+            StatsService.getWalletStats({fields: 'totalAmount', walletId: wallet.id}),
+            StatsService.getWalletActivityReport({
+              fields: 'data { date count }',
+              walletId: wallet.id
+            }),
         ]);
 
         stats = {
@@ -35,6 +39,7 @@ const WalletsPage = () => {
           [wallet.id]: {...walletStats, ...walletActivityReport},
         };
       }
+      setCurrentUser(currentUser);
       setWallets(wallets);
       setStats(stats);
     } catch (error) {

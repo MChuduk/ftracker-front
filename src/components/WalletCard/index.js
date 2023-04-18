@@ -51,7 +51,9 @@ const WalletCard = ({wallet, stats, onRemove}) => {
       <div className={styles.wrapper}>
         <div>
           <div className={styles.info}>
-            <Link className={styles.name}>{wallet.name}</Link>
+            <Link to={`/wallets/${wallet.id}/settings`}
+                className={styles.name}>{wallet.name}
+            </Link>
             <div>{stats.totalAmount} {wallet.currency.type}</div>
           </div>
           <div className={styles.rightSide}>

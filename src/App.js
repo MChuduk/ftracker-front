@@ -18,6 +18,7 @@ import {
   Title,
   Tooltip
 } from "chart.js";
+import {InfoWalletPage} from "./pages/WalletsPage/InfoWalletPage";
 
 ChartJS.register(
     CategoryScale,
@@ -47,6 +48,7 @@ function App() {
             <Route path="dashboard" element={<DashboardPage/>}/>
             <Route path="wallets" element={<WalletsPage/>}/>
             <Route path="wallets/new" element={<CreateWalletPage/>}/>
+            <Route path="wallets/:walletId/settings" element={<InfoWalletPage/>} />
             <Route path="transactions" element={<TransactionsPage/>}/>
             <Route path="transactions/new" element={<CreateTransactionPage/>}/>
           </Route>
