@@ -18,10 +18,11 @@ const TransactionCategoriesPage = () => {
     limit: 20,
   })
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (searchByName) => {
     const {transactionCategories} = await TransactionCategoriesService.getTransactionCategories({
       fields: 'id name svgPath color active',
       pagination: categoriesPagination,
+      searchByName,
     });
     setCategories(transactionCategories);
     console.log(transactionCategories)
@@ -77,6 +78,10 @@ const TransactionCategoriesPage = () => {
     });
   }
 
+  const onChangeSearch = async (value) => {
+    await fetchCategories(value);
+  }
+
   if (loading) return (
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
@@ -90,7 +95,7 @@ const TransactionCategoriesPage = () => {
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
           <div className={styles.header}>
-            <AccentTextInput inputProps={{placeholder: "Find a category..."}}/>
+            <AccentTextInput inputProps={{placeholder: "Find a category..."}} onChange={onChangeSearch} />
             <Link className={styles.link} to="/transaction_categories/new">
               <AccentButton value="New" width="60px" margin="0 0 5px 10px"/>
             </Link>
