@@ -49,8 +49,7 @@ const AccentHeader = () => {
             Wallets
           </Link>
           <Link className={styles.pageLink} to="transactions">Transactions</Link>
-          <Link className={styles.pageLink}>Categories</Link>
-          <Link className={styles.pageLink}>History</Link>
+          <Link className={styles.pageLink} to="transaction_categories">Transaction Categories</Link>
         </div>
         <div className={styles.profileButton}></div>
         {verticalMenu ? <AccentHeaderVerticalMenu className={styles.verticalMenu}/> : null}

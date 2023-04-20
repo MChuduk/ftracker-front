@@ -1,8 +1,9 @@
 .wrapper {
-
+  padding: 0;
 }
 
 .item {
+  list-style-type: none;
   padding: 8px 15px 8px 15px;
   background-color: white;
   border-left: 1px #d8dee4 solid;

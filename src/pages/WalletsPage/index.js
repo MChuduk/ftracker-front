@@ -73,9 +73,7 @@ const WalletsPage = () => {
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
           <div className={styles.header}>
-
             <AccentTextInput inputProps={{placeholder: "Find a wallet..."}}/>
-
             <Link className={styles.link} to="/wallets/new">
               <AccentButton value="New" width="60px" margin="0 0 5px 10px"/>
             </Link>

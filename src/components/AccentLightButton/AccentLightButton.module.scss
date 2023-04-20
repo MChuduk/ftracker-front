@@ -11,5 +11,15 @@
       border: 1px #1771dc solid;
       color: white;
     }
+
+    &:disabled {
+      background-color: #ececec;
+
+      &:hover {
+        background-color: #ececec;
+        border: 1px #d8dee4 solid;
+        color: #3b3b3b;
+      }
+    }
   }
 }

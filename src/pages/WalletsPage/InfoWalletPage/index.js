@@ -1,7 +1,5 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import styles from "./InfoWalletsPage.module.scss";
-import {SettingsIcon} from "../../../icons/settigs";
-import {StatsIcon} from "../../../icons/stats";
 import {AccentHorizontalLine} from "../../../components/AccentHorizontalLine";
 import {AccentTextInput} from "../../../components/AccentTextInput";
 import {useState} from "react";
@@ -12,6 +10,7 @@ import {AccentLightButton} from "../../../components/AccentLightButton";
 import {Dropdown} from "../../../components/Dropdown";
 import {CurrencyService} from "../../../api/currency-service";
 import {AlertModal} from "../../../modal/AlertModal";
+import {IoIosSettings, IoIosStats} from "react-icons/io";
 
 const GeneralTab = ({wallet, currency}) => {
   const [name, setName] = useState(wallet.name);
@@ -157,8 +156,8 @@ const InfoWalletPage = () => {
       <div className={styles.wrapper}>
         <div className={styles.menuColumn}>
           <div className={styles.navMenu} >
-            <Tab icon={<SettingsIcon/>} tabName='General' />
-            <Tab icon={<StatsIcon/>} tabName='Stats' />
+            <Tab icon={<IoIosSettings size={30} color="#404040"/>} tabName='General' />
+            <Tab icon={<IoIosStats size={30} color="#404040"/>} tabName='Stats' />
           </div>
           <AccentHorizontalLine spacing='10px'/>
         </div>

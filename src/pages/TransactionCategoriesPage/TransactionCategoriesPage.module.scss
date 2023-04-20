@@ -1,0 +1,37 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  padding: 10px 5px 5px 5px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.categoryView {
+  display: flex;
+  align-items: center;
+
+  .name {
+    margin-left: 10px;
+  }
+
+  .controlButtons {
+    display: flex;
+    column-gap: 10px;
+  }
+}

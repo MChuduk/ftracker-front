@@ -37,19 +37,22 @@ const DashboardPage = () => {
     try {
       setLoading(true);
       const {currentUser} = await AuthService.getCurrentUser({fields: 'id email displayName'});
-      const [{transactions}, {defaultTransactionCategories}, {currency}, {wallets}] = await Promise.all([
+      const [{transactions}, {transactionCategories}, {currency}, {wallets}] = await Promise.all([
         TransactionService.getAll({
           fields: 'id description date createdAt',
           dateOrder: 'DESC',
           pagination: latestTransactionsPagination
         }),
-        TransactionCategoriesService.getDefaultTransactionCategories({fields: 'id name color svgPath'}),
+        TransactionCategoriesService.getTransactionCategories({
+          fields: 'id name color svgPath',
+          active: true,
+        }),
         CurrencyService.getAll({fields: 'id type rate updatedAt'}),
         WalletsService.getAllWallets({fields: 'id name'}),
       ]);
       setCurrentUser(currentUser);
       setLatestTransactions(transactions);
-      setTransactionCategories(defaultTransactionCategories);
+      setTransactionCategories(transactionCategories);
       setCurrency(currency)
       setWallets(wallets);
       setSelectedWallet(wallets[0].name);
