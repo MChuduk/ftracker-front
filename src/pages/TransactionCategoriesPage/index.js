@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import {AccentButton} from "../../components/AccentButton";
 import {HiEye, HiEyeOff} from "react-icons/hi";
 import {MdDelete} from "react-icons/md";
+import {getIcon} from "../../components/TransactionCategoryButton";
 
 const TransactionCategoriesPage = () => {
   const [loading, setLoading] = useState(false);
@@ -102,10 +103,11 @@ const TransactionCategoriesPage = () => {
           </div>
           <AccentList items={categories.map(category => ({ view: (
               <div className={styles.categoryView}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="30" height="30">
-                  <circle cx="14" cy="14" r="14" fill={category.color} fillRule="evenodd"></circle>
-                  <path fill="#fff" d={category.svgPath}></path>
-                </svg>
+                <div className={styles.iconContainer}>
+                  <div className={styles.iconCircle} style={{backgroundColor: category.color}}>
+                    {getIcon(category.name, 15)}
+                  </div>
+                </div>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%"}}>
                   <div className={styles.name}>
                     {category.name}

@@ -27,3 +27,19 @@
     text-align: center;
   }
 }
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height:60px;
+  border-radius: 50%;
+  background-color: #007acc;
+}
