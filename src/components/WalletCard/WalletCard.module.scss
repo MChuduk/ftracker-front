@@ -1,6 +1,41 @@
 .wrapper {
-    border: 1px #d8dee4 solid;
-    border-radius: 6px;
-    padding: 10px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  .name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0969da;
+    text-decoration: none;
+    margin-bottom: 20px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .description {
+    color: #343434;
+    font-size: 14px;
+  }
+}
+
+.graph {
+  margin-top: 10px;
+}
+
+.rightSide {
+  align-items: end;
+  display: flex;
+  flex-direction: column;
 }

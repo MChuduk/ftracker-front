@@ -1,0 +1,25 @@
+.wrapper {
+  border-left: 2px solid #d7dde3;
+  padding: 0 15px 15px 15px;
+}
+
+.label {
+  color: #505050;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.view {
+  padding-left: 10px;
+}
+
+.circle {
+  position: absolute;
+  margin-top: 5px;
+  margin-left: -20px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #b4b4b4;
+}

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import styles from "./AccentHeaderVerticalMenu.module.scss";
 
 const AccentHeaderVerticalMenu = () => {
@@ -11,4 +11,4 @@ const AccentHeaderVerticalMenu = () => {
   </div>;
 };
 
-export { AccentHeaderVerticalMenu };
+export {AccentHeaderVerticalMenu};

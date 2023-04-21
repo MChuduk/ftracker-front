@@ -1,7 +1,98 @@
-.header {
-  background-color: #24292f;
-  padding: 12px 40px 12px 40px;
+.wrapper {
   display: flex;
-  align-items: center;
-  height: 100%;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-right: 1px #d7dde3 solid;
+  min-width: 300px;
+  width: 300px;
+  padding: 10px;
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10px 35px 5px 35px;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 5px 5px 0;
+  min-width: 500px;
+  row-gap: 20px;
+}
+
+.transactionCategoriesSection {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+span {
+  color: #606972;
+}
+
+form {
+  all: unset;
+}
+
+.label {
+  letter-spacing: 0.2px;
+  color: #343434;
+}
+
+.latestTransactionDescription {
+  margin-left: -10px;
+  margin-top: -15px;
+}
+
+.userName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2f2f2f;
+}
+
+.walletLink {
+  color: #0969da;
+  text-decoration: none;
+  margin-bottom: 5px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.currencyRateLabel {
+  margin-bottom: 8px;
+
+  span {
+    padding-left: 10px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper {
+    height: auto;
+    flex-direction: column;
+  }
+
+  .rightPanel {
+    display: none;
+  }
+
+  .leftColumn {
+    padding-left: 35px;
+  }
 }

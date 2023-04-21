@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    height: calc(100vh - 85px);
+}
+
+.mainColumn {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    padding: 10px 5px 5px 5px;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+span {
+    color: #606972;
+}
+
+form {
+    all: unset;
+}

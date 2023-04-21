@@ -1,10 +1,10 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import {ApolloClient, InMemoryCache} from "@apollo/client";
 
 export const GRAPHQL_ERRORS = {
   UNAUTHENTICATED: "UNAUTHENTICATED",
 };
 
-export function matchGraphqlError({ graphQLErrors }, code) {
+export function matchGraphqlError({graphQLErrors}, code) {
   const errorCodes = graphQLErrors?.map((error) => error.extensions.code);
   return errorCodes?.includes(code);
 }

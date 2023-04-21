@@ -1,0 +1,45 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  width: 80px;
+  padding: 10px 5px 5px 5px;
+  border-radius: 6px;
+  border: 1px solid #d6dce2;
+  background-color: white;
+  box-shadow: 1px 1px 3px #d7d7d7;
+  margin: 15px 10px 0 0;
+
+  &:hover {
+    transition: background-color ease-in 0.05s;
+    background-color: #f6f6f6;
+    box-shadow: none;
+
+    label {
+      color: #525252;
+    }
+  }
+
+  label {
+    color: #343434;
+    margin-top: 5px;
+    text-align: center;
+  }
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height:60px;
+  border-radius: 50%;
+  background-color: #007acc;
+}
