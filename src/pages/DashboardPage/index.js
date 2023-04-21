@@ -85,10 +85,6 @@ const DashboardPage = () => {
     fetchReport();
   }, [selectedWallet, selectedCurrency])
 
-  const logoutHandler = async () => {
-    await AuthService.logout({fields: 'id'})
-  }
-
   if (loading || !currentUser) return (
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
@@ -129,7 +125,6 @@ const DashboardPage = () => {
                 {wallet.name}
               </Link>
           ))}
-          <button onClick={logoutHandler}>logout</button>
         </div>
         <div className={styles.mainColumn}>
           <p className={styles.label}><strong>{currentDate.toDateString()}</strong></p>

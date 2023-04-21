@@ -1,11 +1,31 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styles from "./AccentHeader.module.scss";
 import {AccentHeaderVerticalMenu} from "./AccentHeaderVerticalMenu";
 import {AccentSearchInput} from "../AccentSearchInput";
+import {ProfileMenu} from "../ProfileMenu";
+import {AuthService} from "../../api/auth-service";
 
 const AccentHeader = () => {
   const [verticalMenu, showVerticalMenu] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const fetchData = async () => {
+    const {currentUser} = await AuthService.getCurrentUser({
+      fields: 'id email'
+    });
+    setCurrentUser(currentUser);
+  }
+
+  const onProfileMenuOptionSelected = async (option) => {
+    if (option === 'Logout') {
+      await AuthService.logout({fields: 'id'})
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
       <header>
@@ -51,7 +71,14 @@ const AccentHeader = () => {
           <Link className={styles.pageLink} to="transactions">Transactions</Link>
           <Link className={styles.pageLink} to="transaction_categories">Transaction Categories</Link>
         </div>
-        <div className={styles.profileButton}></div>
+        <div className={styles.profileButton}>
+          <ProfileMenu name={currentUser?.email}
+                       options={['Logout']}
+                       width={30}
+                       contentWidth={120}
+                       onSelected={onProfileMenuOptionSelected}
+          />
+        </div>
         {verticalMenu ? <AccentHeaderVerticalMenu className={styles.verticalMenu}/> : null}
       </header>
   );
