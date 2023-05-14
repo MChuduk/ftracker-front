@@ -14,3 +14,5 @@ root.render(
     </BrowserRouter>
   </ApolloProvider>
 );
+
+//serviceWorker.register();

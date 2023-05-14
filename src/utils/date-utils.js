@@ -2,6 +2,12 @@ export function getFormattedDate(date) {
   return new Date(date).toISOString().split('T')[0];
 }
 
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = { month: 'short', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
 export function getRelativeTimeString(date, locale) {
   const timeMs = typeof date === 'number' ? date : date.getTime();
   const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);

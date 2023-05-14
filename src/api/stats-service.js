@@ -44,4 +44,18 @@ export class StatsService {
       return data;
     });
   }
+
+  static async getTransactionsCategoriesReport(request) {
+    return await AuthService.dispatchGraphqlRequest(async () => {
+      const {fields} = request;
+      delete request.fields;
+      const query = getQuery('transactionCategoriesReport', fields, 'TransactionCategoriesStatsQueryDto!');
+      const {data} = await client.query({
+        query,
+        variables: {request},
+        fetchPolicy: 'network-only'
+      });
+      return data;
+    });
+  }
 }

@@ -3,6 +3,7 @@ import {Dropdown} from "../Dropdown";
 import {useState} from "react";
 import {Line} from "react-chartjs-2";
 import {Spinner} from "../Spinner";
+import {formatDate} from "../../utils/date-utils";
 
 export const options = {
   responsive: true,
@@ -31,12 +32,12 @@ const BudgetStats = ({
                      }) => {
   const [loading, setLoading] = useState(true);
 
-  const labels = report.data.map(x => x.date);
+  const labels = report.data.map(x => formatDate(x.date));
   const data = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Budget',
         data: report.data.map(x => x.totalAmount),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',

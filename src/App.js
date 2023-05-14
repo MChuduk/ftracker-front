@@ -9,6 +9,7 @@ import {CreateWalletPage} from "./pages/WalletsPage/CreateWalletPage";
 import {TransactionsPage} from "./pages/TransactionsPage";
 import {CreateTransactionPage} from "./pages/TransactionsPage/CreateTransactionPage";
 import {
+  ArcElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
@@ -23,6 +24,7 @@ import {TransactionCategoriesPage} from "./pages/TransactionCategoriesPage";
 import {CreateTransactionCategoryPage} from "./pages/TransactionCategoriesPage/CreateTransactionCategoryPage";
 
 ChartJS.register(
+    ArcElement,
     CategoryScale,
     LinearScale,
     PointElement,

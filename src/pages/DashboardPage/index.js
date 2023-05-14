@@ -13,6 +13,8 @@ import {BudgetStats} from "../../components/BudgetStats";
 import {CurrencyService} from "../../api/currency-service";
 import {StatsService} from "../../api/stats-service";
 import {WalletsService} from "../../api/wallet-service";
+import {TransactionCategoriesStats} from "../../components/TransactionCategoriesStats";
+import {AccentToolbar} from "../../components/AccentToolbar";
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(false);
@@ -24,10 +26,12 @@ const DashboardPage = () => {
   const [wallets, setWallets] = useState([]);
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [userBudgetReport, setUserBudgetReport] = useState(null);
+  const [transactionCategoriesReport, setTransactionCategoriesReport] = useState(null);
   const [latestTransactions, setLatestTransactions] = useState([]);
   const [transactionCategories, setTransactionCategories] = useState([]);
   const [currency, setCurrency] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
+  const [selectedStats, setSelectedStats] = useState('Budget');
   const currentDate = new Date();
   const [hours, minutes] = currentDate.toLocaleTimeString().split(':');
   const currentTime = `${hours}:${minutes}`;
@@ -75,6 +79,11 @@ const DashboardPage = () => {
       })
       setUserBudgetReport(userBudgetReport);
     }
+    const {transactionCategoriesReport} = await StatsService.getTransactionsCategoriesReport({
+      fields: 'data { category totalAmount categoryColor }',
+      walletId,
+    })
+    setTransactionCategoriesReport(transactionCategoriesReport);
   }
 
   useEffect(() => {
@@ -137,7 +146,21 @@ const DashboardPage = () => {
                 </Link>)}
           </div>
           <AccentHorizontalLine spacing='20px'/>
-          {userBudgetReport && (
+          <div style={{marginBottom: '10px'}}>
+            <AccentToolbar options={['Budget', 'Categories']}
+                           selectedOption={selectedStats}
+                           onSelectedOption={(option) => setSelectedStats(option)}
+            />
+          </div>
+          {selectedStats === 'Categories' && transactionCategoriesReport && (
+              <TransactionCategoriesStats
+                  wallets={wallets}
+                  selectedWallet={selectedWallet}
+                  onWalletSelected={(wallet) => setSelectedWallet(wallet)}
+                  report={transactionCategoriesReport}
+              />
+          )}
+          {selectedStats === 'Budget' && userBudgetReport && (
               <BudgetStats
                   currency={currency}
                   selectedCurrency={selectedCurrency}

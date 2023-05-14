@@ -10,7 +10,7 @@ export function matchGraphqlError({graphQLErrors}, code) {
 }
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3001/api/graphql/",
+  uri: "http://192.168.217.10:3001/api/graphql/",
   credentials: 'include',
   cache: new InMemoryCache(),
 });
