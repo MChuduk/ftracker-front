@@ -13,7 +13,7 @@ const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [transactionsPagination, setTransactionsPagination] = useState({
     page: 0,
-    limit: 7,
+    limit: 6,
   })
 
   const fetchData = async () => {
@@ -22,6 +22,7 @@ const TransactionsPage = () => {
       const [{transactions}] = await Promise.all([
         TransactionService.getAll({
           fields: 'id description amount date category { name color } wallet { name currency { type } }',
+          dateOrder: 'DESC',
           pagination: transactionsPagination,
         })
       ]);
@@ -61,7 +62,7 @@ const TransactionsPage = () => {
                   <div className={styles.transactionItem}>
                     <div className={styles.transactionItemInfo}>
                       <div style={{display: 'flex', alignItems: 'center'}}>
-                        <strong>{transaction.description}</strong>
+                        <strong className={styles.transactionItemDescription} >{transaction.description}</strong>
                         <TransactionCategoryTag category={transaction.category}/>
                       </div>
                       <label>
