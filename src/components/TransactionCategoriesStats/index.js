@@ -21,11 +21,11 @@ const TransactionCategoriesStats = ({ report, selectedWallet, onWalletSelected, 
   return (
       <div className={styles.wrapper}>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <strong className={styles.label}>Your transactions by categories</strong>
+          <strong className={styles.label}>Your categories</strong>
           <div style={{display: 'flex'}}>
             <Dropdown
                 name='Select a wallet'
-                width={80}
+                width={130}
                 contentWidth={150}
                 options={['All', ...wallets.map(x => x.name)]}
                 selected={selectedWallet}

@@ -11,12 +11,19 @@ import {getFormattedDate} from "../../utils/date-utils";
 const TransactionsPage = () => {
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  const [transactionsPagination, setTransactionsPagination] = useState({
+    page: 0,
+    limit: 7,
+  })
 
   const fetchData = async () => {
     try {
       setLoading(true);
       const [{transactions}] = await Promise.all([
-        TransactionService.getAll({fields: 'id description amount date category { name color } wallet { name currency { type } }'})
+        TransactionService.getAll({
+          fields: 'id description amount date category { name color } wallet { name currency { type } }',
+          pagination: transactionsPagination,
+        })
       ]);
       console.log(transactions);
       setTransactions(transactions);
@@ -36,7 +43,7 @@ const TransactionsPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [transactionsPagination])
 
   if (loading) return (
       <div className={styles.wrapper}>
@@ -71,6 +78,20 @@ const TransactionsPage = () => {
     );
   }
 
+  const onLoadNewer = () => {
+    setTransactionsPagination({
+      page: transactionsPagination.page - 1,
+      limit: transactionsPagination.limit,
+    });
+  }
+
+  const onLoadOlder = () => {
+    setTransactionsPagination({
+      page: transactionsPagination.page + 1,
+      limit: transactionsPagination.limit,
+    });
+  }
+
   const getGroupedTransactions = () => {
     let transactionsDates = transactions.map(transaction => getFormattedDate(transaction.date));
     transactionsDates = new Set(transactionsDates);
@@ -88,6 +109,10 @@ const TransactionsPage = () => {
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
           <AccentGroup items={getGroupedTransactions()}/>
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '15px', columnGap: '10px'}}>
+            <AccentLightButton content="Newer" onClick={onLoadNewer} disabled={transactionsPagination.page <= 0}/>
+            <AccentLightButton content="Older" onClick={onLoadOlder} disabled={transactions.length < transactionsPagination.limit}/>
+          </div>
         </div>
       </div>
   );

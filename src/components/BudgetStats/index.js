@@ -60,7 +60,7 @@ const BudgetStats = ({
           <div style={{display: 'flex'}}>
             <Dropdown
                 name='Select a wallet'
-                width={80}
+                width={130}
                 contentWidth={150}
                 options={['All', ...wallets.map(x => x.name)]}
                 selected={selectedWallet}
