@@ -58,4 +58,18 @@ export class StatsService {
       return data;
     });
   }
+
+  static async getExcelReport(request) {
+    return await AuthService.dispatchGraphqlRequest(async () => {
+      const {fields} = request;
+      delete request.fields;
+      const query = getQuery('excelReport', fields, 'ExcelReportQueryDto!');
+      const {data} = await client.query({
+        query,
+        variables: {request},
+        fetchPolicy: 'network-only'
+      });
+      return data;
+    });
+  }
 }

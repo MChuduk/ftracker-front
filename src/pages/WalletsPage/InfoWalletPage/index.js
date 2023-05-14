@@ -2,7 +2,7 @@ import {useParams, useSearchParams} from "react-router-dom";
 import styles from "./InfoWalletsPage.module.scss";
 import {AccentHorizontalLine} from "../../../components/AccentHorizontalLine";
 import {AccentTextInput} from "../../../components/AccentTextInput";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {WalletsService} from "../../../api/wallet-service";
 import {Spinner} from "../../../components/Spinner";
 import {useForm} from "react-hook-form";
@@ -11,6 +11,10 @@ import {Dropdown} from "../../../components/Dropdown";
 import {CurrencyService} from "../../../api/currency-service";
 import {AlertModal} from "../../../modal/AlertModal";
 import {IoIosSettings, IoIosStats} from "react-icons/io";
+import {AccentButton} from "../../../components/AccentButton";
+import ExcelJS from 'exceljs';
+import {getFormattedDate} from "../../../utils/date-utils";
+import {TransactionService} from "../../../api/transaction-service";
 
 const GeneralTab = ({wallet, currency}) => {
   const [name, setName] = useState(wallet.name);
@@ -97,6 +101,103 @@ const GeneralTab = ({wallet, currency}) => {
   );
 }
 
+const StatsTab = ({ wallet }) => {
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+    reset,
+  } = useForm({reValidateMode: "onBlur"});
+
+  useEffect(() => {
+    reset({
+      fromDate: getFormattedDate(new Date()),
+      toDate: getFormattedDate(new Date()),
+    });
+  }, [reset]);
+
+  const downloadReport = async (data) => {
+    const {transactions} = await TransactionService.getAll({
+      fields: 'id description date amount createdAt category { name } wallet { currency { rate type } }',
+      dateOrder: 'DESC',
+      walletId: wallet.id,
+      fromDate: data.fromDate,
+      toDate: data.toDate,
+    });
+
+    if(transactions.length <= 0) {
+      return;
+    }
+    const currency = transactions[0].wallet.currency;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Report');
+
+    let totalAmount = 0;
+    worksheet.getColumn(1).width = 5;
+    worksheet.getColumn(2).width = 15;
+    worksheet.getColumn(3).width = 10;
+    worksheet.getColumn(4).width = 15;
+    worksheet.getColumn(5).width = 15;
+    worksheet.addRow(['ID', 'Description', 'Amount', 'Date', 'Category']);
+    for (let i = 0; i < transactions.length; i++) {
+      totalAmount = transactions[i].amount;
+      const {description, amount, date} = transactions[i];
+      const categoryName = transactions[i].category.name;
+      worksheet.addRow([i, description, amount, date, categoryName]);
+    }
+    worksheet.addRow();
+    const totalAmountWithRate = totalAmount * currency.rate;
+    worksheet.addRow(['', 'TOTAL AMOUNT', `${totalAmountWithRate} ${currency.type}`]);
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'test.xlsx';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  return (
+      <div>
+        <form autoCapitalize="off" onSubmit={handleSubmit(downloadReport)}>
+          <div style={{display: 'flex', columnGap: '10px'}}>
+            <AccentTextInput
+                label="From Date"
+                name="fromDate"
+                type="date"
+                errors={errors}
+                width="150px"
+                fontWeight="400"
+                inputProps={{
+                  ...register("fromDate", {
+                    required: "FromDate is required.",
+                  }),
+                }}
+            />
+            <AccentTextInput
+                label="To Date"
+                name="toDate"
+                type="date"
+                errors={errors}
+                width="150px"
+                fontWeight="400"
+                inputProps={{
+                  ...register("toDate", {
+                    required: "ToDate is required.",
+                  }),
+                }}
+            />
+          </div>
+          <AccentHorizontalLine spacing='10px'/>
+          <AccentButton value="Download report" width="150px"  buttonProps={{type: "submit" }}/>
+        </form>
+      </div>
+  )
+}
+
 
 const InfoWalletPage = () => {
   const [loading, setLoading] = useState(false);
@@ -149,7 +250,8 @@ const InfoWalletPage = () => {
   )
 
   const tabs = {
-    General: <GeneralTab wallet={wallet} currency={currency}/>
+    General: <GeneralTab wallet={wallet} currency={currency}/>,
+    Stats: <StatsTab wallet={wallet} />,
   }
 
   return (
