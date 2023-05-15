@@ -16,13 +16,16 @@ const WalletsPage = () => {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({});
 
-  const fetchData = async () => {
+  const fetchData = async (searchByName) => {
     try {
-      setLoading(true);
+      if(!searchByName) {
+        setLoading(true);
+      }
       const {currentUser} = await AuthService.getCurrentUser({fields: 'id'});
       const {wallets} = await WalletsService.getAllWallets({
         fields: "id name currency { type }",
-        userId: currentUser.id
+        userId: currentUser.id,
+        searchByName,
       });
       let stats = {}
       for (const wallet of wallets) {
@@ -57,6 +60,10 @@ const WalletsPage = () => {
     }
   }
 
+  const onChangeSearch = async (value) => {
+    await fetchData(value);
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -73,7 +80,7 @@ const WalletsPage = () => {
       <div className={styles.wrapper}>
         <div className={styles.mainColumn}>
           <div className={styles.header}>
-            <AccentTextInput inputProps={{placeholder: "Find a wallet..."}}/>
+            <AccentTextInput inputProps={{placeholder: "Find a wallet..."}} onChange={onChangeSearch}/>
             <Link className={styles.link} to="/wallets/new">
               <AccentButton value="New" width="60px" margin="0 0 5px 10px"/>
             </Link>

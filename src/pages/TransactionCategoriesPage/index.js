@@ -26,7 +26,6 @@ const TransactionCategoriesPage = () => {
       searchByName,
     });
     setCategories(transactionCategories);
-    console.log(transactionCategories)
   }
 
   const fetchData = async () => {
